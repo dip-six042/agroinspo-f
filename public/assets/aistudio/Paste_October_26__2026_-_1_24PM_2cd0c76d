@@ -1,0 +1,750 @@
+PRODUCT REQUIREMENTS
+DOCUMENT
+Agricultural Consulting & Marketplace Platform
+A digital platform for farmer services, organisational collaboration,
+farm investment opportunities, payments, and progress reporting
+ 
+Document field
+Details
+Document status
+Revised draft for product, design, engineering, operations, and compliance review
+Version
+1.1 — Expanded ecosystem requirements
+Prepared for
+Product owner / Agricultural organisation
+Primary launch market
+Nigeria (initial assumption; configurable for expansion)
+Platform type
+Responsive website with role-based dashboards
+Audience
+Product, design, engineering, operations, finance, compliance, and project teams
+ 
+Important: Investment features must be designed with appropriate legal, financial, and regulatory review before public launch.
+
+1. Executive Summary
+The proposed platform is an agricultural consulting and marketplace website that connects farmers, trained agricultural professionals, farms seeking investment, individual investors, organisations, and the platform administrator. It will help users discover expertise, request and deliver agricultural services, collaborate on projects, review eligible farm investment opportunities, make or receive payments through approved payment channels, and monitor project or investment progress through structured reports.
+The platform should be built as a secure, mobile-friendly web application with role-based registration, profiles, dashboards, workflows, notifications, and an administrative back office. The first release should prioritise trust, verification, transparent project reporting, and a clear separation between service payments and investment funds.
+2. Product Vision and Objectives
+Vision: Build a trusted digital hub that makes agricultural expertise, collaboration, and responsible farm-development opportunities easier to access.
+• Connect farmers with verified and appropriately skilled agricultural professionals.
+• Enable organisations to discover the platform and collaborate with the organisation on agricultural projects.
+• Allow farms to create profiles and submit project or investment proposals for review.
+• Provide individuals with access to reviewed farm opportunities and transparent progress updates.
+• Support secure payment collection for platform-approved services and project-related transactions.
+• Give farmers, partners, and investors a clear view of milestones, deliverables, evidence, and reported progress.
+• Create a scalable foundation for future marketplace, reporting, and project-management features.
+3. Scope
+3.1 In scope for the initial release (MVP)
+• Public website pages explaining the organisation, services, collaboration model, and how the platform works.
+• Registration, login, password reset, role selection, and user profile management.
+• Farmer and farm registration, profile completion, and document submission.
+• Agricultural professional registration, skills profiles, experience, location, service categories, and verification status.
+• Service directory and basic search/filtering for professionals.
+• Service request or hiring workflow between farmers and professionals.
+• Organisation/partner enquiry and collaboration project intake.
+• Farm opportunity submission, review, approval/rejection, and investor-facing opportunity pages.
+• Investor registration and profile, subject to applicable identity and compliance checks.
+• Payment gateway integration for approved transactions; payment records and transaction status.
+• Project/investment progress reports, milestones, supporting evidence, and investor/partner dashboard views.
+• Notifications by email and in-platform alerts; SMS/WhatsApp can be added if budget and integrations permit.
+• Admin dashboard for users, farms, professionals, organisations, opportunities, payments, reports, and disputes.
+• Audit logs and basic platform analytics.
+3.2 Out of scope unless separately approved
+• Automated investment advice, guaranteed returns, or a promise that any farm opportunity will be profitable.
+• Operating as a bank, custodian, securities exchange, fund manager, or escrow provider without the required approvals and partner arrangements.
+• A full accounting/ERP system for farms.
+• Native iOS and Android apps; the MVP should be responsive on mobile browsers.
+• Automated credit scoring, lending, insurance underwriting, or complex secondary trading of investments.
+• IoT sensors or automatic farm telemetry; reports may be manually submitted in the MVP.
+4. User Roles and Permissions
+Role
+Main capabilities
+Key restrictions / controls
+Visitor
+Browse public pages, services, approved farm opportunities, FAQs, and collaboration information.
+Cannot access private dashboards or submit restricted transactions.
+Farmer / Farm owner
+Create personal/farm profile, submit verification documents, request professional services, submit projects/opportunities, view service and project progress.
+Cannot publish investment opportunities until review and approval.
+Agricultural professional
+Create skills profile, list services, upload credentials, receive and respond to work requests, update assigned work progress.
+Verification status must be visible; no false claims of certification.
+Organisation / project partner
+Submit partnership enquiry, propose or manage approved projects, assign contacts, review milestones and reports for its projects.
+Access limited to its own projects and authorised information.
+Individual investor
+Complete profile and required checks, browse approved opportunities, review risk disclosures, submit interest or participate through an approved legal/payment process, view reports.
+Investment functionality must be enabled only after compliance approval; no guaranteed-return language.
+Platform administrator
+Manage users, verify profiles, moderate listings, review opportunities, manage project records, monitor payments, handle complaints, configure categories and content.
+Privileged actions must be permission-controlled and audited.
+Finance / compliance reviewer
+Review payment reconciliation, required checks, disclosures, transaction exceptions, and compliance records.
+Access only to records needed for assigned responsibilities.
+ 
+5. Core User Journeys
+5.1 Farmer hires a professional
+1. Farmer creates an account and verifies their email/phone.
+2. Farmer completes their profile, farm location, production type, needs, and preferred contact method.
+3. Farmer searches or browses verified professionals by expertise, location, service, availability, and profile information.
+4. Farmer submits a service request describing the task, location, timeline, and budget where applicable.
+5. Professional accepts, declines, or requests clarification; the farmer can compare responses.
+6. The parties agree on scope, deliverables, timeline, and payment terms.
+7. Payment is processed through an approved gateway or partner flow where applicable.
+8. Professional updates status and submits deliverables; farmer confirms completion or raises an issue.
+9. Both parties can rate the experience after completion, subject to moderation.
+5.2 Farm submits an investment opportunity
+10. Farm owner registers and completes a farm profile.
+11. Farm owner submits the opportunity description, use of funds, proposed structure, financial assumptions, risks, timeline, evidence, and required documents.
+12. Admin and designated compliance reviewers check completeness, authenticity, disclosures, and eligibility.
+13. The opportunity is approved, returned for edits, or rejected. Only approved opportunities appear publicly.
+14. Eligible users view the opportunity page, supporting documents, risks, and status.
+15. If enabled by legal/compliance approval, an investor completes required checks and submits an expression of interest or investment instruction.
+16. Funds move only through an approved payment/custody arrangement with clear status, receipts, reconciliation, and refund/withdrawal rules.
+17. The farm submits scheduled progress reports against milestones; the platform records and makes approved reports visible to authorised investors.
+18. Exceptions, delays, material changes, and complaints are escalated to the platform operations team.
+5.3 Organisation collaborates on a project
+19. Organisation submits a partnership or project enquiry.
+20. Platform team qualifies the enquiry and arranges follow-up.
+21. A project record is created with objectives, scope, geography, budget, beneficiaries, deliverables, milestones, owners, and reporting schedule.
+22. Authorised parties receive project access and agree on roles and approvals.
+23. Progress updates, field evidence, deliverables, risks, and expenses (where required) are submitted.
+24. Project lead reviews and approves reports; stakeholders can view the latest approved status.
+6. Functional Requirements
+ID
+Feature
+Requirement
+Priority
+FR-01
+Account creation and authentication
+Users can sign up, log in, log out, verify email/phone, reset passwords, and manage sessions securely.
+Must
+FR-02
+Role-based onboarding
+Registration captures user type and routes each user through a relevant profile setup.
+Must
+FR-03
+Profiles and verification
+Farmers, farms, professionals, organisations, and investors can maintain profiles and submit documents for review.
+Must
+FR-04
+Professional directory
+Farmers can search/filter professionals by category, skill, location, availability, and verification status.
+Must
+FR-05
+Service requests
+Farmers can submit a brief, receive responses, agree scope, track status, and close or dispute a request.
+Must
+FR-06
+Organisation collaboration
+Organisations can submit enquiries and authorised users can view/manage their own projects.
+Must
+FR-07
+Farm listings
+Farm owners can submit farm and opportunity details, documents, photos, project goals, and funding requirements.
+Must
+FR-08
+Opportunity moderation
+Unreviewed opportunities remain private; admins can approve, reject, request changes, suspend, or archive listings.
+Must
+FR-09
+Investor dashboard
+Investors can see opportunities they have saved or participated in, transaction status, documents, milestones, and reports they are authorised to view.
+Must
+FR-10
+Payments
+The platform records payment intent, gateway reference, amount, currency, fees, status, receipts, refunds, and reconciliation results.
+Must
+FR-11
+Progress reporting
+Project/farm owners can submit scheduled reports with narrative, milestone status, key metrics, images/files, risks, and next steps.
+Must
+FR-12
+Report review and publication
+Authorised reviewers can approve, reject, request edits, and publish reports to the relevant stakeholders.
+Must
+FR-13
+Notifications
+The platform sends alerts for verification, requests, payments, report deadlines, approvals, and material project updates.
+Must
+FR-14
+Ratings and feedback
+Users can provide feedback after completed service engagements; admins can moderate abuse.
+Should
+FR-15
+Messaging
+Users can exchange project/service messages without exposing private contact details unnecessarily.
+Should
+FR-16
+Search and discovery
+Users can search approved services, farms, opportunities, and public project information.
+Must
+FR-17
+Admin console
+Admins manage users, roles, categories, listings, project records, payments, reports, complaints, and content.
+Must
+FR-18
+Audit trail
+Sensitive actions such as approvals, role changes, opportunity publication, and transaction status changes are logged.
+Must
+FR-19
+Content management
+Authorised staff can update public pages, FAQs, policies, announcements, and agricultural resources.
+Should
+FR-20
+Export and reporting
+Admins can export permitted operational reports for users, requests, projects, opportunities, and transactions.
+Should
+ 
+7. Key Screens and Pages
+Area
+Required screens / content
+Public website
+Home, About, Services, How It Works, Professional Directory, Farm Opportunities, Organisation Partnerships, Resources/Latest Posts, Contact, FAQs, Privacy Policy, Terms, Risk Disclosures.
+Sign-up and access
+Role selection, registration, login, verification, password reset, consent and policy acknowledgement.
+Farmer dashboard
+Farm profile, service discovery, requests, active engagements, messages, payments/receipts, project records, support.
+Professional dashboard
+Professional profile, skills/credentials, service offerings, incoming requests, accepted work, deliverables, status updates, ratings.
+Farm owner dashboard
+Farm profile, document checklist, opportunity submissions, review status, project milestones, reporting calendar, investor update submissions.
+Investor dashboard
+Profile and verification status, approved opportunities, saved opportunities, participation/transaction history where legally enabled, documents, progress reports, alerts.
+Organisation dashboard
+Partnership enquiries, assigned projects, contacts, scope, milestones, deliverables, reports, approvals.
+Admin dashboard
+Overview metrics, user verification queue, listings review, project management, report moderation, payment monitoring, complaints, audit logs, settings.
+ 
+8. Farm and Investment Opportunity Data
+A farm profile and a fund-seeking opportunity should be separate records. A farm may exist on the platform without seeking investment.
+• Farm profile: farm name, owner/contact, location (with privacy controls), farm type, crops/livestock, operating history, scale/capacity, photos, certifications where applicable, and verification status.
+• Opportunity: project title, purpose, amount sought, intended use of funds, proposed investment/participation structure, duration, milestones, financial assumptions, key risks, exit/repayment terms if applicable, fees, eligibility, documents, and update frequency.
+• Evidence: registration documents where applicable, ownership/lease evidence, relevant permits, historical records, budgets, quotations, field photos, and other documents required by the review policy.
+• Disclosure: past performance is not a guarantee of future results; all material risks and fees must be presented clearly.
+• Visibility: only approved, current opportunities are publicly discoverable; draft and rejected records remain private.
+9. Payments and Financial Controls
+The platform must distinguish between (a) service fees paid to professionals or the platform, (b) organisation project payments, and (c) any funds contributed to farm opportunities. These flows may require different contracts, payment arrangements, reconciliation, and regulatory treatment.
+• Use a reputable payment service provider that supports the intended Nigerian transaction types and required compliance controls.
+• Do not store raw card details; use provider-hosted or tokenised payment flows.
+• Record currency, amount, fee breakdown, transaction reference, payer/payee, timestamps, status, refunds, and reconciliation results.
+• Show clear statuses such as initiated, pending, successful, failed, refunded, or under review.
+• Provide downloadable or emailed receipts for completed transactions.
+• Use role-based access and maker-checker approval for sensitive refunds, manual adjustments, or disbursement instructions.
+• Investment funds must not be pooled, held, advertised, or disbursed by the platform unless the relevant legal structure, licensed partners, and approvals permit it.
+• Define failed-payment handling, duplicate callbacks, chargebacks, refund rules, settlement delays, and dispute escalation.
+10. Progress and Quality Reporting
+Progress reporting is a core trust feature. Reports should be structured, time-stamped, attributable, and linked to a project or opportunity.
+Report field
+Description
+Reporting period
+Start/end date and submission date.
+Overall status
+Not started, on track, at risk, delayed, completed, or paused.
+Milestones
+Planned milestone, due date, actual status, completion percentage, and evidence.
+Production / operations metrics
+Relevant metrics such as acreage cultivated, livestock count, input use, harvest quantity, sales, survival/mortality, or other project-specific measures.
+Financial summary
+Budgeted versus spent funds and variance explanation where applicable; access limited to authorised users.
+Evidence
+Photos, documents, invoices, receipts, field notes, or other supporting files.
+Risks and issues
+Problem, impact, mitigation, owner, and target resolution date.
+Next steps
+Actions planned before the next report and responsible person.
+Review history
+Submitted by, reviewed by, status, comments, and timestamps.
+ 
+Reports should move through Draft → Submitted → In Review → Changes Requested or Approved → Published to authorised stakeholders. Preserve previous approved reports and revision history.
+11. Non-Functional Requirements
+• Responsive design: usable on current desktop, tablet, and mobile browsers, including low-to-mid-range Android devices.
+• Performance: aim for key public pages to load quickly on common Nigerian mobile networks; compress images and defer non-critical assets.
+• Availability: define a target with the engineering team; proposed MVP target is 99.5% monthly uptime excluding planned maintenance.
+• Security: HTTPS, secure password hashing, input validation, protection against common web vulnerabilities, rate limiting, secure file uploads, and least-privilege permissions.
+• Privacy: collect only necessary personal data, explain its use, provide appropriate consent and retention controls, and restrict farm/investor documents.
+• Reliability: daily backups at minimum, tested restoration procedures, monitoring, error logging, and documented incident response.
+• Accessibility: readable typography, keyboard navigation for key flows, descriptive form labels, and adequate contrast.
+• Maintainability: documented API contracts, database migrations, environment configuration, automated tests, and staging/production separation.
+• Auditability: record who performed important administrative, approval, report, and financial actions.
+• Scalability: architecture should support additional regions, user categories, agricultural sectors, and payment providers.
+12. Suggested Technical Architecture
+The engineering team may recommend alternatives, but the solution should include the following logical components:
+• Frontend: responsive web application with accessible components and role-specific dashboards.
+• Backend/API: secure application API with authentication, role-based access control, validation, business rules, and audit events.
+• Database: relational database for users, farms, opportunities, service requests, projects, milestones, reports, and transactions.
+• File storage: private object storage for identity/business documents, evidence, photos, and downloadable reports; signed or time-limited access links.
+• Payment integration: provider integration with signed webhook verification, idempotent processing, reconciliation, and transaction logs.
+• Notifications: email service first; optional SMS/WhatsApp integration after confirming consent, costs, and provider requirements.
+• Administration: protected back-office interface with permissions and review queues.
+• Monitoring: application logs, uptime monitoring, error alerts, backups, and security event tracking.
+13. Data Entities (Initial Model)
+Entity
+Purpose / key relationships
+User
+Identity, login, contact details, status, consent, and role memberships.
+FarmerProfile
+Farmer-specific information linked to a user.
+Farm
+Farm identity, location, operation type, owner/manager, verification status.
+ProfessionalProfile
+Skills, experience, credentials, service categories, service area, availability.
+Organisation
+Organisation profile, authorised contacts, verification, and project relationships.
+ServiceListing
+Professional's service offering, scope, price/rate where applicable, and availability.
+ServiceRequest / Engagement
+Request details, parties, agreed scope, milestones, status, deliverables, and dispute record.
+Project
+Collaboration project scope, partner organisations, owners, budget, geography, and status.
+FarmOpportunity
+Farm-linked opportunity, funding request, structure, disclosures, documents, approval state.
+Participation / InvestmentRecord
+Investor interest or legally approved participation record, terms, amount, status, and transaction links.
+PaymentTransaction
+Provider reference, amount, fees, status, payment type, refund, settlement, and reconciliation data.
+Milestone
+Deliverable, owner, due date, progress, evidence, and status.
+ProgressReport
+Reporting period, metrics, narrative, risks, attachments, review state, and revision history.
+Notification
+Recipient, channel, message template, status, and timestamps.
+Review / AuditEvent
+Administrative decisions, reviewer comments, actor, action, timestamp, and relevant record.
+Dispute / SupportTicket
+Issue description, related transaction/engagement, evidence, owner, and resolution.
+ 
+14. Legal, Regulatory, and Trust Considerations
+Because the platform may present farm investment opportunities and facilitate payments, the product owner must obtain Nigerian legal and regulatory advice before enabling investment solicitation, collecting investment funds, promising returns, or arranging disbursements. The correct treatment depends on the actual product structure and how the platform operates.
+• Have counsel assess applicable Nigerian securities/investment, company, consumer-protection, payment, AML/KYC, data-protection, tax, and other requirements.
+• Use a qualified payment or custody partner where required; confirm in writing which party receives, safeguards, settles, refunds, and disburses funds.
+• Provide clear risk disclosures and avoid language implying guaranteed returns or risk-free investment.
+• Define investor eligibility, identity/business checks, source-of-funds checks where required, complaints handling, conflicts of interest, and record retention.
+• Publish privacy, terms of use, service terms, refund/cancellation rules, acceptable-use policy, and investment risk disclosures reviewed by counsel.
+• Do not treat a farm profile as proof of ownership, project legitimacy, financial performance, or investment suitability.
+• Make verification scope explicit: indicate what was checked, by whom, and when.
+15. Analytics and Success Metrics
+Metric
+What it measures
+Registration completion rate
+Percentage of users who complete onboarding after starting registration.
+Verified profile count
+Number of approved farmer, farm, professional, and organisation profiles.
+Professional discovery-to-request rate
+Percentage of directory visitors who submit a service request.
+Service fulfilment rate
+Percentage of accepted engagements completed successfully.
+Organisation enquiry conversion
+Enquiries that become qualified or active projects.
+Farm opportunity review time
+Time from complete submission to an admin decision.
+Report submission timeliness
+Percentage of scheduled reports submitted by the due date.
+Payment success and reconciliation rate
+Successful transactions and transactions reconciled to provider records.
+Dispute / complaint rate
+Rate and resolution time for complaints, disputes, or payment exceptions.
+User retention and satisfaction
+Returning active users and post-engagement feedback.
+ 
+16. MVP Acceptance Criteria
+• A new user can register, verify their contact method, sign in, and complete the correct profile for their role.
+• A farmer can search professionals, open a profile, and submit a service request.
+• A professional can receive a request, respond, and update the engagement status.
+• An organisation can submit a collaboration enquiry and authorised staff can convert it into a project record.
+• A farm owner can create a farm profile and submit an opportunity with required documents.
+• Unapproved opportunities cannot be seen publicly or used to accept investment.
+• An admin can review, approve, reject, or request edits to farm opportunities and user profiles.
+• Where payment functionality is enabled, a test transaction updates status safely, creates a receipt, and is reconciled using verified provider events.
+• A project/farm owner can submit a progress report with milestones and evidence; a reviewer can request changes or approve it.
+• Authorised stakeholders can view only the projects, documents, transactions, and reports they are permitted to access.
+• Sensitive administrative and financial actions are logged.
+• Core workflows work on desktop and mobile browsers and pass agreed security and usability tests.
+17. Delivery Phases
+Phase
+Deliverables
+Release gate
+Phase 0 — Discovery & compliance
+Confirm business model, roles, user journeys, investment structure, legal requirements, payment provider, and MVP priorities.
+Product owner signs off requirements; legal/compliance blockers identified.
+Phase 1 — Foundation
+Public pages, authentication, role onboarding, profiles, verification workflow, admin foundation.
+Role-based access and profile workflows pass tests.
+Phase 2 — Services & collaboration
+Professional directory, service requests, organisation enquiries, project records, milestones.
+End-to-end service and collaboration workflows pass tests.
+Phase 3 — Farm opportunities & reporting
+Farm profiles, opportunity submission/review, investor dashboard, report submission/review, evidence storage.
+Opportunity approval, access controls, and reporting workflows pass tests.
+Phase 4 — Payments & controlled launch
+Payment integration, receipts, reconciliation, refunds/disputes, notifications, monitoring, user acceptance testing.
+Payment provider and compliance sign-off; production readiness checklist complete.
+Phase 5 — Optimisation
+Messaging, ratings, advanced analytics, integrations, additional languages/regions, mobile app consideration.
+Prioritised by user feedback and platform metrics.
+ 
+18. Open Decisions for the Product Owner
+• What is the organisation's official name, brand, logo, and domain?
+• Will the platform charge subscription fees, listing fees, commissions, project-management fees, or a combination?
+• Will the platform only introduce investors to farms, or will it actively facilitate investment transactions and disbursements?
+• What investment models are intended: equity, debt/repayment, profit share, sponsorship, grants, or another structure? Each may require different legal treatment.
+• Who will verify farms, professional credentials, and organisation legitimacy, and what evidence is required?
+• Which payment provider and payout model will be used, and who is legally responsible for holding or transferring funds?
+• What is the required reporting cadence (weekly, monthly, milestone-based) and who approves reports?
+• Will users communicate through platform messaging, WhatsApp, email, or a combination?
+• What languages are required at launch, and should the platform support low-bandwidth mode?
+• What are the launch budget, timeline, hosting preference, support hours, and target number of initial users?
+19. Final Product Principle
+The platform must earn trust through verified identities and profiles, clear service terms, controlled opportunity publication, secure payment handling, transparent reporting, strong access controls, and honest communication about risk. Build the MVP around reliable workflows first, then expand based on validated user needs and legal/compliance readiness.
+
+REVISION 1.1 — EXPANDED PRODUCT REQUIREMENTS
+Community, Learning, Creators, Agricultural Jobs, Advertising, Events, Commerce, and Payouts
+Purpose: This revision extends the original Agricultural Consulting & Marketplace Platform PRD. It retains the original professional directory, farmer services, organisational collaboration, farm opportunities, payments, reporting, and compliance requirements, while adding the four-profile agricultural ecosystem described by the product owner.
+Implementation rule: The detailed requirements in this revision supplement and, where more specific, take precedence over the original role and feature descriptions. Product-owner decisions and professional legal/compliance review remain required for payments, payouts, job listings, advertising, digital products, and any investment functionality.
+20. Revised Product Summary and Ecosystem Model
+The platform is a responsive agricultural digital ecosystem where people learn, discuss, publish, attend events, find agricultural jobs, hire specialists, market agricultural products and services, and collaborate on farm or sector projects. The public landing page introduces the ecosystem and routes visitors to the right account type. After sign-in, each user sees a personalised portal/feed and role-specific tools.
+Four primary profile types: Agriculture Enthusiast; Farmer / Farm; Agricultural Specialist / Consultant; Agricultural Business. A person may hold multiple profile types through linked role memberships if approved by the product owner. Permissions, verification, and billing must remain distinct by role.
+Profile
+Core purpose
+Distinct capabilities
+Agriculture Enthusiast
+Learn, participate, build a professional presence, and find agricultural jobs.
+Feed, discussions, live and recorded events, notifications, job discovery/application, creator screening.
+Farmer / Farm
+Access practical learning, specialist advice, community, and workers.
+Feed, events, paid audio/video consultations, paid job listings, farm profile and service requests.
+Agricultural Specialist / Consultant
+Share expertise and monetise professional knowledge/services.
+Creator screening, approved publishing, paid consultations, advertising, book sales, earnings and scheduled payouts.
+Agricultural Business
+Promote legitimate agricultural products/services and reach customers or partners.
+Verified business profile, paid adverts, product/service promotion, job listings, event sponsorship, enquiries/leads.
+ 
+21. Public Landing Page Requirements
+The landing page is the main public entry point. It must explain the platform before registration and be mobile-first, fast, accessible, search-engine friendly, and designed to convert visitors into ecosystem members.
+Section
+Requirements
+Hero / value proposition
+Clear headline and supporting copy; primary CTA such as Join the Ecosystem; secondary CTAs such as Explore Services or Find an Expert.
+What we do
+Explain agricultural learning, specialist consultation, jobs, business promotions, live events, community, and project/partnership support.
+Four pathways
+Cards for Agriculture Enthusiast, Farmer/Farm, Agricultural Specialist/Consultant, and Agricultural Business, explaining who each is for.
+Feed preview
+Approved sample posts, discussions, videos, upcoming events, and featured learning content; no private information.
+Experts and services
+Explain specialist categories, location/expertise discovery, consultation pricing, and on-platform calls/video calls.
+Jobs
+Preview vacancies and explain how candidates apply and how farms/businesses post jobs.
+Events and library
+Upcoming live events and searchable recorded events/resources.
+Business marketplace
+Verified business profiles, products/services, sponsored content clearly labelled as advertising.
+Trust and verification
+Explain identity, creator screening, business verification, moderation, and community standards without overstating checks.
+Pricing and how it works
+Summarise paid services, job/advert listings, subscriptions, and sponsorship options; link to full terms.
+Footer
+About, contact, help/FAQ, Terms, Privacy, Community Guidelines, Creator Policy, Advertising Policy, Refund/Cancellation Policy, and relevant legal disclosures.
+ 
+Acceptance: a first-time visitor can understand the platform, distinguish the four account types, find services/events/jobs, review trust and legal information, and start registration on desktop or mobile.
+22. Four Profile Types, Permissions, and Onboarding
+22.1 Shared capabilities
+• Secure sign-up/sign-in, email and/or phone verification, password reset, account recovery, consent capture, and session management.
+• Profile with photo/logo, display name, biography, location, interests, goals, preferred agricultural sectors, and notification preferences.
+• Personalised portal/feed containing eligible text, image, and video posts; search/filtering; reactions; comments; and conversations.
+• Access to relevant live video events and recorded replays subject to event permissions, price/access rules, and recording consent.
+• In-platform notifications for followed topics, replies, messages, events, jobs, payment status, and verification decisions.
+• Privacy controls for profile fields, contact details, activity visibility, and communication preferences.
+• Report/block/mute tools, community rules, support, and a way to appeal moderation decisions.
+• Interests and goals used for feed ranking, event recommendations, job recommendations, and optional notification personalisation.
+22.2 Profile A — Agriculture Enthusiast
+Purpose: people who want to learn about agriculture, join discussions, attend events, and explore agricultural career opportunities.
+• View and interact with text, photo, and video posts; comment, react, join discussion threads, and follow topics/creators.
+• Join live video conferences/events and access eligible recordings from a searchable event library.
+• Receive event reminders, live-now alerts, followed-topic updates, and replies to their activity.
+• Set interests and goals such as poultry, crops, aquaculture, livestock, agribusiness, BSF/insect farming, careers, or other agricultural areas.
+• Browse jobs, search/filter, save vacancies, view details, apply on-platform or follow an external application link, and track status when employers update it.
+• Create a jobseeker profile with CV, skills, qualifications, experience, location/preferences, and a setting controlling employer visibility.
+• Apply to become a creator. Publishing rights stay disabled until topic-specific screening is completed and an authorised reviewer approves the result.
+• Screening may use a quiz, sample content, practical evidence, identity checks, or interview. Approval in one topic does not automatically approve all topics; retest/appeal options should be defined.
+22.3 Profile B — Farmer / Farm
+Purpose: farmers and farm entities seeking practical knowledge, advice, workers, and business connections.
+• Use the shared feed, conversations, live events, replays, and notifications.
+• Create a farm profile with farm type, location, scale/capacity, products, operational needs, and relevant verification documents.
+• Discover consultants by specialisation, service area, language, availability, rate, experience, and verification status.
+• Request/book paid consultations by audio or video call within the platform; see rate, duration, scope, and cancellation terms before confirming.
+• Pay through an approved provider; receive booking confirmation/receipt and access booking history and dispute/support processes.
+• Post job vacancies with title, duties, location, employment type, pay range where possible, required skills, closing date, and application method.
+• Pay the listing fee or use an eligible package; see status, expiry, applications, and renewal/close controls.
+• Maintain interests, goals, farm needs, and preferred consultant categories for recommendations.
+22.4 Profile C — Agricultural Specialist / Consultant
+Purpose: professionals and practitioners who provide expertise, publish educational material, offer paid consultations, and sell knowledge products.
+• Use the shared feed, discussions, live/recorded events, and notifications.
+• Complete a profile covering expertise categories, credentials, experience, service area, languages, portfolio, availability, and rates.
+• Apply for creator status and pass topic-specific screening before publishing creator-gated educational content. Credential verification and creator screening are separate statuses.
+• Publish approved text, image, and video content under moderation/community rules; content may be pre-reviewed or post-moderated.
+• Offer paid consultations with configurable rates per hour or session, duration, available time slots, scope, and cancellation/no-show terms.
+• Deliver consultations through secure platform audio/video integration. Record booking/session metadata; do not record call content by default.
+• Publish books/digital learning products with title, author, description, cover, price, preview, format, access/download permissions, and refund terms.
+• Create paid adverts for eligible services, products, or events using approved packages, campaign duration, and targeting where supported.
+• View gross earnings, platform fees, refunds/chargebacks, pending and available balance, payout status/history, and statements.
+• Receive eligible net earnings on a configured payout schedule after fees and permitted deductions, subject to verification, minimum thresholds, holds, disputes, and provider rules.
+22.5 Profile D — Agricultural Business
+Purpose: legitimate agricultural companies, cooperatives, suppliers, processors, service providers, input dealers, employers, and related organisations.
+• Use the shared feed, discussions, live/recorded events, and notifications.
+• Create a business profile with legal/trading name, category, address/region, authorised contact, website/social links, products/services, and verification evidence.
+• Business verification must state what was checked and must not imply a blanket guarantee of quality, solvency, or performance.
+• After verification and any required ad review, publish paid adverts and promote eligible products/services with descriptions, media, price or quote request, service area, availability, and enquiry route.
+• Manage packages, campaign dates, invoices/receipts, performance metrics, enquiries/leads, renewals, and moderation decisions.
+• Sponsor events through packages describing benefits, placement, duration, deliverables, price, and sponsorship terms.
+• Post jobs under the employer workflow and manage applications where permitted.
+• Only authorised business representatives can administer the profile, buy promotions, view leads, or access billing details.
+23. Feed, Content, Conversations, and Discovery
+Requirement
+Detailed behaviour
+Unified feed
+Mix text, image, and video posts from approved creators, followed accounts/topics, relevant businesses, events, and discussions. Role and visibility rules govern actions.
+Feed controls
+Pagination or efficient infinite scroll, search, topic/category filters, relevant sorting, and controls to mute/unfollow topics/accounts.
+Interactions
+Like/react, comment, reply in threads, follow creator, share within permitted platform surfaces, save/bookmark, and report.
+Media
+Validate types/sizes; generate thumbnails/transcode video as needed; secure storage; accessible captions/alt text support.
+Content lifecycle
+Draft, pending review, approved/published, changes requested, rejected, removed, appealed, archived; keep reviewer/timestamp audit history.
+Recommendations
+Use declared interests, follows, role, voluntarily provided location, and engagement; provide controls and do not expose private data.
+Accessibility / low bandwidth
+Responsive design, compressed media, captions/transcripts where available, keyboard navigation, readable text, and graceful weak-network handling.
+ 
+All profile types can consume and interact with eligible content. Publishing rights depend on role, creator screening, business verification, moderation status, and fees. A verified business is not automatically an approved educational creator; a screened creator is not automatically a licensed professional.
+24. Live Events, Video Conferences, and Replay Library
+• Authorised users/admins can create events with title, description, topic, host/speakers, date/time/time zone, duration, audience, capacity, registration, price/access rules, and recording preference.
+• Event directory/feed shows upcoming, live, completed, cancelled, and replay-available states.
+• Users can register, receive confirmation/reminders, join through a supported browser, and receive live-now alerts when opted in.
+• Integrate a video provider with suitable host/moderator controls, attendee management, chat/Q&A, and reporting.
+• Publish approved recordings in a searchable library with title, topic, host/speaker, date, description, captions/transcript if available, and access controls.
+• Disclose recording before/during the event and handle consent. Restrict recordings where content is paid, private, or sensitive.
+• Organisers can review registration, attendance, engagement, sponsorship deliverables, and feedback where supported.
+• Sponsorship must be clearly labelled and must not override safety, editorial, or community standards.
+25. Agricultural Jobs Marketplace
+25.1 Jobseeker experience
+• Agriculture Enthusiasts can create a jobseeker profile, upload/update CV, add skills/qualifications/experience, set location/preferences, and control profile visibility.
+• Job search/filter by keyword, specialisation, location, experience, employment type, remote/on-site, pay range if supplied, and closing date.
+• Save vacancies, apply on-platform or use external application links, and view status where employers provide updates.
+• Notify users about relevant vacancies and application status according to their preferences.
+• Vacancy pages display employer identity/verification status, role requirements, location, pay information when supplied, closing date, and report-job option.
+25.2 Employer / farm experience
+• Farm/Farmer and verified Agricultural Business accounts can create/manage listings subject to role permissions and verification rules.
+• Job form includes title, description, responsibilities, qualifications, employment type, location, pay range where available, number of openings, closing date, and application method.
+• Screen for scams, discriminatory/prohibited content, misleading claims, and suspicious requests for payment.
+• Listing states: Draft, Payment Pending, Under Review, Published, Paused, Expired, Rejected, Closed, Archived.
+• Configure listing fees by duration, featured status, package/subscription, and approved options. Show price and refund/renewal rules before payment.
+• Employers may access applicants and application materials only for their own vacancies and disclosed recruitment purposes.
+• Candidates should not be charged simply to apply for an ordinary vacancy. Optional training/credential services must be separately described.
+26. Creator Screening, Publishing, and Moderation
+Stage
+Requirement
+Application
+User selects topic(s), supplies profile details, completes the required assessment/sample, and accepts creator terms.
+Assessment
+Topic quiz, sample review, practical evidence, identity/credential check, or interview as appropriate.
+Decision
+Approve, reject, or request information; record reviewer, score/notes, decision date, topic scope, review date, and appeal/retest route.
+Publishing
+Only eligible creators publish in approved categories; content remains subject to community rules and moderation.
+Ongoing trust
+Reports, corrections, takedowns, warnings, restrictions, suspension, appeals, and audit logs.
+Transparency
+Show the scope of screening. A knowledge test must not be described as a professional licence or formal accreditation.
+ 
+27. Consultant Booking, Calls, Fees, and Earnings
+• Consultant configures service category, rate, billing unit (per hour/session), minimum duration, available slots, service scope, and cancellation/no-show policy.
+• Farmer selects consultant/service/time/duration; platform shows total price, fee treatment, and terms before checkout.
+• Booking statuses include Requested/Checkout Started, Payment Pending, Confirmed, In Progress, Completed, Cancelled, No-show, Refunded, and Disputed as applicable.
+• Audio/video call uses a secure provider integration. Capture booking/session metadata, not call content, unless recording is separately supported with consent and retention rules.
+• After a completed consultation, farmer may submit a moderated rating/review.
+• Consultant dashboard shows gross sale, platform commission, permitted provider charges, refunds/chargebacks, net payable, pending/available balance, payout date/status, and transaction reference.
+28. Payments, Platform Fees, Ledger, and Scheduled Payouts
+Maintain an auditable ledger and transparent fees. “Wallet” should initially mean an internal ledger of amounts due/earned, not an unlicensed deposit-taking or stored-value product. Use payment and payout providers appropriate to Nigerian law and provider rules.
+28.1 Fee and ledger rules
+• Admin can configure service commission, job fee, advert fee, book/product commission, event sponsorship fee, subscription price, and discounts by product type and effective date.
+• Before checkout, show price, platform charge where applicable, provider/tax treatment where applicable, total payable, refund/cancellation terms, and seller/consultant net amount where relevant.
+• Use immutable ledger entries for charge, platform fee, provider fee, refund, chargeback, adjustment, payout, reversal, and reconciliation. Do not rely only on a mutable balance field.
+• Separate pending earnings from available earnings. Holds may apply for completion, refund windows, fraud review, chargeback exposure, compliance checks, or disputes under published terms.
+• Payout eligibility requires verification, valid payout account, any configured minimum, no blocking hold, and reconciled transactions.
+• Payout batches are configurable (e.g., weekly/monthly), previewable by authorised finance/admin, and traceable to included earnings and deductions.
+• Use idempotency, provider references, payout status tracking, retry/failed-payout workflow, reconciliation, and support escalation.
+• Notify consultants when earnings become available and when payouts are scheduled, processed, failed, held, or adjusted.
+• Provide downloadable statements and audit fee-rule changes and payout decisions.
+• Do not represent pending balances as bank deposits or guarantee a payout date when provider/compliance conditions can delay settlement.
+28.2 Illustrative fee configuration — owner decision required
+Transaction
+Illustrative planning assumption only
+Expected behaviour
+Consultation
+Configurable commission, e.g. 10–20%
+Show total paid, commission, permitted charges, and consultant net before booking.
+Digital book
+Configurable commission, e.g. 10–25%
+Grant purchase-linked access after successful payment; apply refund policy.
+Business advert
+Fixed fee by package/duration
+Charge before campaign activation; show expiry and renewal.
+Job listing
+Fixed fee by listing type/duration
+Publish after payment and any moderation/verification gate.
+Event sponsorship
+Package price or custom quote
+Record agreed placements, deliverables, dates, payment, and completion evidence.
+ 
+Rates are placeholders for discussion, not final commercial or legal advice. Approve the rate card, tax treatment, refund rules, and payment/payout providers before implementation.
+29. Books and Digital Learning Products
+• Approved consultants/creators can submit title, author, topic, description, price, cover, sample/preview, format, language, publication date, and rights declaration.
+• Authorised reviewers can approve, reject, suspend, or remove listings for copyright, quality, policy, or legal concerns.
+• Purchasers view product details, pay, receive a receipt, and access content through secure account-linked library/download controls.
+• Use reasonable access controls; download limits/watermarking are optional only if technically and legally appropriate.
+• Provide refund/complaint handling, duplicate-purchase handling, and seller statements for gross sales, fees, refunds, and net earnings.
+• Seller confirms distribution rights; provide a copyright complaint/takedown process.
+30. Advertising, Business Listings, and Event Sponsorship
+• Businesses and eligible consultants create adverts with format, headline, description, media, destination/contact action, target category/region where supported, schedule, package/budget, and terms.
+• Clearly label sponsored placements as Sponsored/Advertisement and distinguish them from ordinary community posts.
+• Admin controls categories, restricted/prohibited products, ad approval, suspension, refunds, reporting, and advertiser verification.
+• Configure prices by placement, duration, format, region/audience, featured status, and sponsorship package. Show total before checkout.
+• Campaign reporting may show measured impressions, clicks, enquiries/leads, registrations, and spend; do not promise outcomes or invent reach.
+• Business profiles show products/services, description, enquiry route, location/service area, verification scope, campaigns, and terms.
+• Event sponsorship packages specify logo/mentions, speaking opportunity if any, resource links, placement, audience exposure, dates, deliverables, reporting, cancellation, and any exclusivity.
+31. Notifications and Communication Matrix
+Trigger
+Recipients
+Channels / controls
+Live event/reminder/starting
+Registered users and users following relevant topics
+In-app; email/push/SMS/WhatsApp only if configured and consented.
+Comment/reply/mention/message
+Relevant author/participants
+In-app, configurable digest, mute controls.
+Job posted/closing/application status
+Matching jobseekers and applicants
+In-app/email; opt-in job alerts.
+Consultation request/booking/reminder/completion
+Farmer and consultant
+In-app/email with time zone and cancellation status.
+Payment/refund/fee/payout status
+Payer, seller/consultant, authorised finance/admin
+In-app/email with transaction reference; no sensitive payment details.
+Creator/business verification decision
+Applicant/business owner
+In-app/email with next steps and appeal route where applicable.
+Ad/job approval/rejection/expiry/renewal
+Advertiser/employer
+In-app/email with reason and action options.
+ 
+32. Revised Data Model — Additional Entities
+Entity
+Purpose / relationships
+RoleMembership / ProfileType
+Links user to one or more profile types and permissions.
+UserInterest / Goal
+Topics, learning/career goals, farm needs, and notification preferences.
+Post / MediaAsset
+Content, media metadata, author, topic, status, visibility, moderation.
+Comment / Reaction / Follow / Bookmark
+Feed interactions and relationships.
+CreatorApplication / ScreeningAssessment
+Topic-specific submission, assessment, reviewer, decision, and retest history.
+LiveEvent / Registration / Attendance / Replay
+Event, host, access, attendance, recording and replay metadata.
+JobListing / JobApplication / SavedJob
+Vacancy, employer, payment, expiry, application status, candidate materials.
+ConsultationService / Slot / Booking / Session
+Rates, availability, participants, call metadata, completion and dispute state.
+BookProduct / Purchase / DigitalEntitlement
+Product metadata, purchase, secure access, refund, seller earnings.
+AdvertCampaign / Placement / AdMetric
+Campaign, payment, approval, schedule, placement, measured performance.
+BusinessProfile / BusinessVerification
+Legal/trading details, authorised representatives, evidence, review status.
+EventSponsorship / SponsorshipDeliverable
+Sponsor, package, agreement, placement, fee, deliverables, evidence.
+FeeRule / CommissionRule
+Versioned fee configuration, effective date, and approval.
+LedgerEntry / EarningsBalance / PayoutBatch / Payout
+Immutable financial entries, pending/available earnings, batches, references, reconciliation.
+NotificationPreference / Delivery
+User preferences, consent, delivery status, retries.
+ModerationCase / Report / Appeal
+Reported content/user/listing, evidence, decision, enforcement, appeal.
+Review / Rating
+Ratings linked to completed consultations/services.
+ 
+33. Admin and Operations Requirements
+• Role-based admin console with separate permissions for support, content moderation, creator screening, business verification, jobs, ads, events, finance, and compliance.
+• Review queues for creator applications, business verification, jobs, sponsored ads, books, reported content, payment exceptions, and payout batches.
+• Admin manages topic taxonomy, profile options, listing duration/prices, commissions, minimum payout, payout schedule, promotions, and event access settings with audit logs.
+• Support cases link to the relevant user, post, booking, job, purchase, payment, payout, or event.
+• Financial history cannot be silently edited; corrections create auditable adjustment entries with reason and actor.
+• Dashboards track signups, active users, reports, screening outcomes, event attendance, applications, bookings, transaction value, platform revenue, refunds, and payout exceptions.
+34. Security, Privacy, Safety, and Compliance Additions
+• Enforce server-side role-based access control for every API/data object; hiding frontend controls is not sufficient.
+• Protect CVs, identity/business documents, consultation details, call links, purchased books, financial statements, and payout details with least-privilege access and time-limited links where appropriate.
+• Obtain consent for event recording and disclose whether chat/attendee details may be recorded. Do not record private consultations by default.
+• Use verified payment webhooks, idempotent processing, secure secret storage, reconciliation, rate limiting, fraud monitoring, and audit logs.
+• Define retention/deletion rules for CVs, messages, recordings, payment records, verification documents, and assessment data; follow applicable Nigerian data-protection requirements and obtain legal review.
+• Publish community standards, prohibited ad categories, job anti-scam policy, creator policy, advertiser terms, consultation cancellation/refund policy, digital product terms, and payout terms.
+• Represent business verification, creator screening, and credential checks accurately and separately. Verification is not a guarantee of performance or advice outcomes.
+• Review applicable Nigerian requirements for privacy/data protection, consumer protection, recruitment, tax, payments, digital content, advertising, and any retained investment features.
+35. Revised MVP Prioritisation
+Release
+Recommended scope
+Release gate
+MVP A — Foundation
+Landing page; four profile types; authentication; onboarding; interests/goals; text/image/video feed; reactions/comments; admin foundation; basic notifications.
+Role permissions, mobile usability, moderation, privacy, and feed tests pass.
+MVP B — Events and Jobs
+Event directory, registration, live-video integration, recordings/replay, reminders; job listings, employer payment, applications and status tracking.
+Event access/recording consent and job scam/report workflows pass.
+MVP C — Paid Expertise and Content
+Consultant directory, booking, audio/video calls, books, creator screening, earnings ledger, fees, scheduled payouts.
+Provider approval, ledger reconciliation, refunds/disputes, payout test, and legal review complete.
+MVP D — Business Monetisation
+Business verification, paid adverts, product/service pages, campaign metrics, event sponsorship, employer subscriptions/promotions.
+Ad review, clear pricing, sponsorship deliverables, and advertiser terms tested.
+Later expansion
+Advanced recommendations, mobile apps, courses/certificates, integrations, analytics, project-management enhancements, investment features where legally approved.
+Prioritise from usage data, feedback, feasibility, and compliance readiness.
+ 
+If budget or timeline is constrained, do not launch every video, marketplace, and monetisation feature at once. The original professional marketplace, organisation collaboration, farm opportunities, investment reporting, and project workflows remain in the broader product scope and should be sequenced with the product owner.
+36. Additional Acceptance Criteria
+• A visitor can identify the four profile types and start the appropriate onboarding path from the landing page.
+• Each profile sees the shared feed but only receives actions permitted by role, verification state, creator status, and content visibility.
+• Users can save/update interests and goals and adjust notification preferences.
+• An Agriculture Enthusiast can browse jobs, apply, and view their applications without paying to apply for an ordinary vacancy.
+• A farmer can discover consultants, view rates/terms, book and pay for an audio/video consultation, and receive confirmation.
+• A consultant cannot publish creator-gated content until topic-specific screening is approved; screening history is auditable.
+• A consultant can list a book, receive approved purchases, and view gross sales, fees, refunds, and net earnings.
+• A verified business can publish eligible paid adverts after required moderation/payment and submit event sponsorship requests.
+• An employer/farm can pay for a listing, track approval/expiry, manage applications for its own vacancies, and close the job.
+• A scheduled payout batch calculates earnings from ledger entries, applies configured charges, prevents duplicate payouts, and produces a reconciliation report.
+• Admin can review creator applications, business verification, jobs, adverts, books, sponsorships, and reported content.
+• Event attendees receive reminders; authorised users can join live events; permitted recordings can be published as replays.
+• Users cannot access another user’s private CV, business documents, purchase entitlement, consultation link, transaction, or payout details without permission.
+• Moderation, verification, fee-rule, payment, refund, and payout actions are audit logged.
+• Core flows pass desktop/mobile, weak-network, failed-payment, and failed-payout tests.
+37. Product Owner Decisions Required Before Development
+• Confirm brand name, domain, launch regions/languages, and whether one user may operate multiple profile types.
+• Approve release boundaries and priority order for feed, live video, jobs, consultant booking, digital books, adverts, and sponsorship.
+• Choose live video/audio provider and confirm usage pricing, participant limits, recording, and integration requirements.
+• Define creator screening by topic, assessors, pass thresholds, renewal/retest, and appeals.
+• Define business verification evidence, reviewer, and exact meaning of the verified badge.
+• Approve prices for job posts, consultant/business adverts, subscriptions, books, sponsorship, and consultation commissions.
+• Approve commission rates, provider charges/taxes, refund rules, minimum payout, payout frequency, hold periods, and chargeback treatment.
+• Select payment/payout providers and obtain advice on the legal structure for receiving, recording, and disbursing funds in Nigeria.
+• Decide whether job applications are hosted on-platform or can link to external employer systems.
+• Define moderation staffing/response times, prohibited categories, copyright complaints, event recording consent, and retention/deletion.
+• Confirm whether original farm-investment functionality is included in launch or gated until legal/compliance approval.
+• Confirm budget, launch date, expected user counts, service-level targets, and feature owners.
+38. Revised Product Principle
+The platform should function as a trusted agricultural ecosystem rather than a static directory. It combines useful education and community, verified expertise, transparent job and advertising listings, convenient consultations, valuable learning products, relevant events, and reliable payment/payout operations. Trust depends on clear permissions, truthful verification labels, moderation, transparent fees, secure handling of user and financial data, and honest reporting. Build in testable stages and do not activate regulated or high-risk financial flows before the necessary professional review and provider arrangements are complete.
+Product Requirements Document | Agricultural Consulting & Marketplace  •  

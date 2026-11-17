@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+/*
+ * Agro Inspo design tokens — styled after the Farmora reference:
+ * neutral off-white canvas, near-black ink, one lime accent, light large type,
+ * flat surfaces with hairline borders, generous radii.
+ *
+ * The stock Tailwind palettes used throughout the portals (slate, stone, emerald)
+ * are remapped here so every screen inherits the same look without per-class edits.
+ */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Inter Tight', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand */
+  --color-lime: #d4f63d;
+  --color-lime-deep: #c3e52c;
+  --color-ink: #141414;
+  --color-ink-soft: #1c1c1c;
+  --color-canvas: #fbfbf9;
+  --color-mist: #f1f1ee;
+
+  /* Neutral greys (replaces the blue-tinted slate) */
+  --color-slate-50: #f7f7f5;
+  --color-slate-100: #efefec;
+  --color-slate-200: #e3e3df;
+  --color-slate-300: #cbcbc6;
+  --color-slate-400: #9d9d98;
+  --color-slate-500: #73736e;
+  --color-slate-600: #575753;
+  --color-slate-700: #3d3d3a;
+  --color-slate-800: #262624;
+  --color-slate-900: #161615;
+  --color-slate-950: #0d0d0c;
+
+  --color-stone-50: #f8f8f6;
+  --color-stone-100: #f1f1ee;
+  --color-stone-200: #e6e6e1;
+  --color-stone-300: #d2d2cc;
+  --color-stone-400: #a3a39d;
+  --color-stone-500: #787873;
+  --color-stone-600: #5a5a56;
+  --color-stone-700: #40403d;
+  --color-stone-800: #292927;
+  --color-stone-900: #181817;
+  --color-stone-950: #0e0e0d;
+
+  /* Emerald becomes an olive/lime family that sits with the lime accent */
+  --color-emerald-50: #f6fbe3;
+  --color-emerald-100: #ecf6c6;
+  --color-emerald-200: #ddef94;
+  --color-emerald-300: #c9e25c;
+  --color-emerald-400: #aac838;
+  --color-emerald-500: #86a420;
+  --color-emerald-600: #668317;
+  --color-emerald-700: #4c6413;
+  --color-emerald-800: #1f1f1d;
+  --color-emerald-900: #0f0f0e;
+  --color-emerald-950: #0a0a09;
+
+  /* Role accents (sky = specialist, purple = business) fold into the single
+     lime/olive accent so no screen introduces a second brand colour. */
+  --color-sky-50: #f6fbe3;
+  --color-sky-100: #ecf6c6;
+  --color-sky-200: #ddef94;
+  --color-sky-300: #c9e25c;
+  --color-sky-400: #aac838;
+  --color-sky-500: #86a420;
+  --color-sky-600: #4c6413;
+  --color-sky-700: #3a4d0e;
+  --color-sky-800: #1f1f1d;
+  --color-sky-900: #141414;
+  --color-sky-950: #0a0a09;
+
+  --color-purple-50: #f6fbe3;
+  --color-purple-100: #ecf6c6;
+  --color-purple-200: #ddef94;
+  --color-purple-300: #c9e25c;
+  --color-purple-400: #aac838;
+  --color-purple-500: #86a420;
+  --color-purple-600: #4c6413;
+  --color-purple-700: #1f1f1d;
+  --color-purple-800: #141414;
+  --color-purple-900: #0f0f0e;
+  --color-purple-950: #0a0a09;
+
+  /* Radii a touch tighter, shadows near-flat */
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.25rem;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+  --shadow-md: 0 2px 8px -2px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 8px 24px -8px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 16px 40px -12px rgb(0 0 0 / 0.16);
+  --shadow-2xl: 0 24px 60px -16px rgb(0 0 0 / 0.22);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background: var(--color-lime);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-sans);
+}
+
+/* Figures: tabular Inter instead of a monospace face */
+.font-mono-numbers,
+.font-mono {
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.005em;
+}
+
+/* Small "• Label" kicker used across sections, as in the reference */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.kicker::before {
+  content: '';
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

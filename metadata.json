@@ -1,0 +1,6 @@
+{
+  "name": "Agro Inspo",
+  "description": "Agricultural Consulting & Marketplace Platform connecting farmers, specialists, enthusiasts, and agribusinesses.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
