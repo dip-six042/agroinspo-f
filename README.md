@@ -24,4 +24,10 @@ The site runs at http://localhost:3000. Requests to `/api` are proxied to the AP
 | `npm run preview` | Serves the production build |
 | `npm run lint` | TypeScript check (`tsc --noEmit`) |
 
-`node_modules/`, `dist/`, and local env files are git-ignored.
+`node_modules/`, `dist/`, and local env files are git-ignored. `.env.production` is committed because it only names the public API host.
+
+## Host on Vercel
+
+Import this repo in Vercel. Framework preset: Vite. No extra environment variables are required.
+
+`vercel.json` proxies `/api` to `https://agroinspo-api.onrender.com`, so the browser stays on the Vercel domain and login cookies keep working. If Render gives the API a different hostname, change that destination and `VITE_API_ORIGIN` in `.env.production` together. The live site is expected at https://agroinspo-f.vercel.app. If Vercel assigns another URL, set the backend `APP_URL` and `ALLOWED_ORIGINS` to that exact origin.
