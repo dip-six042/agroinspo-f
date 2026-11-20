@@ -164,6 +164,8 @@ export const EventsView: React.FC<{ sub?: string; id?: string; onNavigate: (v: s
   const { user } = useAuth();
   const canHost = !!user && HOST_ROLES.includes(user.role);
   const [tab, setTab] = useState<Tab>((['replays', 'mine', 'hosting'].includes(sub || '') ? sub : 'upcoming') as Tab);
+  const [query, setQuery] = useState('');
+  const [topic, setTopic] = useState('');
   const [events, setEvents] = useState<EventItem[] | null>(null);
   const [error, setError] = useState('');
   const [openId, setOpenId] = useState<string | undefined>(sub && !['new', 'edit', 'room', 'replays', 'mine', 'hosting'].includes(sub) ? sub : undefined);
@@ -172,9 +174,12 @@ export const EventsView: React.FC<{ sub?: string; id?: string; onNavigate: (v: s
 
   const load = () => {
     setError('');
-    api.get<{ events: EventItem[] }>(`/events?when=${tab}`).then((r) => setEvents(r.events)).catch((e: ApiError) => setError(e.message));
+    const params = new URLSearchParams({ when: tab });
+    if (query.trim()) params.set('q', query.trim());
+    if (topic) params.set('topic', topic);
+    api.get<{ events: EventItem[] }>(`/events?${params}`).then((r) => setEvents(r.events)).catch((e: ApiError) => setError(e.message));
   };
-  useEffect(load, [tab, user?.id]);
+  useEffect(load, [tab, topic, user?.id]);
   useEffect(() => {
     if (!openId) return setOpenEvent(null);
     api.get<{ event: EventItem }>(`/events/${openId}`).then((r) => setOpenEvent(r.event)).catch(() => setOpenId(undefined));
@@ -195,12 +200,12 @@ export const EventsView: React.FC<{ sub?: string; id?: string; onNavigate: (v: s
     <div className={`${WRAP} py-12 sm:py-16`}>
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
         <div>
-          <Kicker>Events</Kicker>
+          <Kicker>Live sessions & webinars</Kicker>
           <h1 className="mt-4 font-display text-[34px] sm:text-[48px] font-normal leading-[1.05] tracking-[-0.03em] max-w-3xl">
-            Live masterclasses and clinics, with replays when you miss them.
+            Consultants and agricultural businesses host live sessions here. Replays stay in the library when recording was agreed.
           </h1>
         </div>
-        {canHost && <Button variant="ink" onClick={() => onNavigate('events:new')} className="self-start lg:self-auto"><Plus className="w-4 h-4" /> Host an event</Button>}
+        {canHost && <Button variant="ink" onClick={() => onNavigate('events:new')} className="self-start lg:self-auto"><Plus className="w-4 h-4" /> Schedule a webinar</Button>}
       </div>
 
       <div className="mt-8 flex border-b border-stone-200 gap-6 text-[13px] font-medium overflow-x-auto whitespace-nowrap" role="tablist">
@@ -209,6 +214,15 @@ export const EventsView: React.FC<{ sub?: string; id?: string; onNavigate: (v: s
             className={`pb-3 ${tab === t.id ? 'text-ink border-b-2 border-ink' : 'text-slate-500 hover:text-ink'}`}>{t.label}</button>
         ))}
       </div>
+
+      <form className="mt-6 flex flex-col sm:flex-row gap-3" onSubmit={(e) => { e.preventDefault(); load(); }}>
+        <input className="h-11 flex-1 px-4 rounded-full border border-stone-300 text-[14px]" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search title, host or topic" aria-label="Search webinars" />
+        <select className="h-11 px-4 rounded-full border border-stone-300 text-[14px] bg-white" value={topic} onChange={(e) => setTopic(e.target.value)} aria-label="Category">
+          <option value="">All categories</option>
+          {Object.entries(TOPIC_LABELS).map(([k, label]) => <option key={k} value={k}>{label}</option>)}
+        </select>
+        <Button type="submit" variant="outline">Search</Button>
+      </form>
 
       {error && <Notice tone="error" className="mt-6">{error}</Notice>}
       {tab === 'upcoming' && <SponsoredSlot placement="events" onNavigate={onNavigate} className="mt-8" />}

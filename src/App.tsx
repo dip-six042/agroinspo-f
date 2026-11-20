@@ -181,12 +181,7 @@ const MainContent: React.FC = () => {
 
             {base === 'events' && <EventsView key={`${arg ?? ''}-${arg2 ?? ''}`} sub={arg} id={arg2} onNavigate={handleNavigate} />}
 
-            {currentView === 'opportunities' && (
-              <OpportunitiesView
-                onViewProgressReport={(rep) => setActiveProgressReport(rep)}
-                onSubmitOpportunityModal={() => setIsSubmitOppOpen(true)}
-              />
-            )}
+            {currentView === 'opportunities' && <OpportunitiesView />}
 
             {base === 'books' && <BookstoreView sub={arg} onNavigate={handleNavigate} />}
 
@@ -204,18 +199,20 @@ const MainContent: React.FC = () => {
                     onBookSpecialist={(spec) => (user ? handleNavigate('specialists') : setSelectedSpecialistForBooking(spec))}
                     onViewProgressReport={(rep) => setActiveProgressReport(rep)}
                     onPostJobModal={() => (user ? handleNavigate('jobs:new') : setIsPostJobOpen(true))}
-                    onSubmitOpportunityModal={() => setIsSubmitOppOpen(true)}
+                    onSubmitOpportunityModal={() => handleNavigate('opportunities')}
                   />
                 )}
                 {currentRole === 'specialist' && (
                   <SpecialistPortal
                     onPublishBookModal={() => handleNavigate(user ? 'books:mine' : 'auth:signup:specialist')}
+                    onOpenWebinars={() => handleNavigate('events:hosting')}
                   />
                 )}
                 {currentRole === 'business' && (
                   <BusinessPortal
                     onPostJobModal={() => (user ? handleNavigate('jobs:new') : setIsPostJobOpen(true))}
                     onCreateAdModal={() => (user ? handleNavigate('business:ads') : setIsCreateAdOpen(true))}
+                    onOpenWebinars={() => handleNavigate('events:hosting')}
                   />
                 )}
                 {currentRole === 'admin' && <AdminPortal key={arg ?? ''} tab={arg} />}

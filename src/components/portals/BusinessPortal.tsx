@@ -20,9 +20,10 @@ import { HERO_IMAGE } from '../../data/mockData';
 interface BusinessPortalProps {
   onPostJobModal: () => void;
   onCreateAdModal: () => void;
+  onOpenWebinars?: () => void;
 }
 
-export const BusinessPortal: React.FC<BusinessPortalProps> = ({ onPostJobModal, onCreateAdModal }) => {
+export const BusinessPortal: React.FC<BusinessPortalProps> = ({ onPostJobModal, onCreateAdModal, onOpenWebinars }) => {
   const { currentUser, adCampaigns, jobs } = useRole();
   const { formatMoney } = useCurrency();
 
@@ -68,6 +69,11 @@ export const BusinessPortal: React.FC<BusinessPortalProps> = ({ onPostJobModal, 
             <PlusCircle className="w-3.5 h-3.5" />
             <span>Post Business Role</span>
           </button>
+          {onOpenWebinars && (
+            <button onClick={onOpenWebinars} className="py-2 px-3.5 bg-ink hover:bg-black text-white rounded-full text-xs font-medium">
+              Live sessions & webinars
+            </button>
+          )}
         </div>
       </div>
 

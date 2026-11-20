@@ -18,9 +18,10 @@ import {
 
 interface SpecialistPortalProps {
   onPublishBookModal: () => void;
+  onOpenWebinars?: () => void;
 }
 
-export const SpecialistPortal: React.FC<SpecialistPortalProps> = ({ onPublishBookModal }) => {
+export const SpecialistPortal: React.FC<SpecialistPortalProps> = ({ onPublishBookModal, onOpenWebinars }) => {
   const { currentUser, bookings, books, ledger, openMeetingRoom } = useRole();
   const { formatMoney } = useCurrency();
 
@@ -83,6 +84,11 @@ export const SpecialistPortal: React.FC<SpecialistPortalProps> = ({ onPublishBoo
               {formatMoney(currentUser.pendingBalanceNGN || 36000)}
             </span>
           </div>
+          {onOpenWebinars && (
+            <button onClick={onOpenWebinars} className="py-2 px-3.5 bg-ink hover:bg-black text-white rounded-full text-xs font-medium flex items-center gap-1.5">
+              <Video className="w-3.5 h-3.5" /> Live sessions & webinars
+            </button>
+          )}
         </div>
       </div>
 

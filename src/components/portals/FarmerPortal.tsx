@@ -75,7 +75,7 @@ export const FarmerPortal: React.FC<FarmerPortalProps> = ({
             className="py-2 px-3.5 bg-ink hover:bg-black text-white rounded-full text-xs font-medium flex items-center gap-1.5 transition-colors shadow-xs"
           >
             <TrendingUp className="w-3.5 h-3.5" />
-            <span>Submit Farm Proposal</span>
+            <span>Investment waiting list</span>
           </button>
         </div>
       </div>
@@ -224,7 +224,7 @@ export const FarmerPortal: React.FC<FarmerPortalProps> = ({
               onClick={onSubmitOpportunityModal}
               className="text-xs font-medium text-amber-800 hover:underline"
             >
-              + Propose New Outgrower Block
+              Investment waiting list
             </button>
           </div>
 

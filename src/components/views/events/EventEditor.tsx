@@ -30,7 +30,7 @@ export const EventEditor: React.FC<{ eventId?: string; onNavigate: (v: string) =
   }, [eventId]);
 
   if (!user || !['specialist', 'business', 'admin'].includes(user.role))
-    return <Notice>Specialist, business and admin accounts can host events.</Notice>;
+    return <Notice>Agricultural consultants, businesses and admins can schedule webinars.</Notice>;
 
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setF({ ...f, [k]: e.target.value });
 
@@ -61,7 +61,8 @@ export const EventEditor: React.FC<{ eventId?: string; onNavigate: (v: string) =
         <ArrowLeft className="w-4 h-4" /> Events you’re hosting
       </button>
       <div className="mt-6"><Kicker>Host</Kicker></div>
-      <h1 className="mt-3 font-display text-[30px] sm:text-[40px] font-normal leading-[1.1] tracking-[-0.02em]">{eventId ? 'Edit event' : 'Host a live event'}</h1>
+      <h1 className="mt-3 font-display text-[30px] sm:text-[40px] font-normal leading-[1.1] tracking-[-0.02em]">{eventId ? 'Edit webinar' : 'Schedule a webinar'}</h1>
+      <p className="mt-3 text-[13px] text-slate-500">Agricultural consultants and businesses can host. Set a capacity if the session is only for registered people. Recording asks everyone to agree before they join.</p>
       <div className="mt-5"><EmailVerifyBanner /></div>
       <form onSubmit={submit} className="mt-8 space-y-5">
         <Field id="ev-title" label="Title"><input id="ev-title" className={inputClass} value={f.title} onChange={set('title')} maxLength={140} required /></Field>
