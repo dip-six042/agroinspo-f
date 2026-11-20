@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { api, EventItem, Job, JOB_TYPE_LABELS, SpecialistSummary, TOPIC_LABELS } from '../lib/api';
-import { useRole } from '../context/RoleContext';
 import { useCurrency } from '../context/CurrencyContext';
 import { useAuth } from '../context/AuthContext';
 import { Avatar } from './ui';
-import { RoleType, Specialist } from '../types';
+import { RoleType } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight,
@@ -32,7 +31,6 @@ import {
 
 interface LandingPageProps {
   onNavigate: (view: string) => void;
-  onBookSpecialist: (specialist: Specialist) => void;
 }
 
 const WRAP = 'max-w-[1320px] mx-auto px-4 sm:px-8 lg:px-12';
@@ -200,33 +198,6 @@ const FEATURES = [
 
 const EVENT_IMAGES = [GREENHOUSE_AGRONOMIST, DRONE_DAYLIGHT_IMAGE, CASSAVA_FARM_IMAGE, FIELD_ROWS_IMAGE, DRONE_FARM_IMAGE];
 
-const TESTIMONIALS = [
-  {
-    quote:
-      'Our maize block showed nitrogen stress mid-season. I booked a soil specialist on a video call that afternoon and had a fertigation plan before the weekend.',
-    name: 'Chief Olayinka A.',
-    role: 'Farm Owner, Oyo',
-    image: HERO_FARMER_SUNRISE,
-    pos: '33% 30%'
-  },
-  {
-    quote:
-      'Consultations, handbook sales and payouts all sit in one ledger. I can see the platform fee on every booking before it is confirmed.',
-    name: 'Dr. Folashade A.',
-    role: 'Soil Specialist, Ibadan',
-    image: AGRONOMIST_IMAGE,
-    pos: '58% 25%'
-  },
-  {
-    quote:
-      'I found my greenhouse supervisor role here and applied without paying anything. The masterclass replays helped me prepare for the interview.',
-    name: 'Amaka O.',
-    role: 'Greenhouse Supervisor, Plateau',
-    image: GREENHOUSE_AGRONOMIST,
-    pos: '50% 30%'
-  }
-];
-
 const TRUST = [
   {
     title: 'Identity & credentials',
@@ -254,52 +225,45 @@ const FEES = [
 
 /* Page --------------------------------------------------------------------- */
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onBookSpecialist }) => {
-  const { switchRole, specialists, jobs, events } = useRole();
+export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   const { formatMoney } = useCurrency();
 
   const [aboutTab, setAboutTab] = useState<AboutKey>('about');
   const [missionIndex, setMissionIndex] = useState(0);
   const [eventIndex, setEventIndex] = useState(0);
-  const [testimonialIndex, setTestimonialIndex] = useState(0);
 
-  // Live data from the server when it's running; the bundled samples otherwise.
-  const [liveJobs, setLiveJobs] = useState<Job[] | null>(null);
-  const [liveEvents, setLiveEvents] = useState<EventItem[] | null>(null);
-  const [liveExperts, setLiveExperts] = useState<SpecialistSummary[] | null>(null);
+  const [liveJobs, setLiveJobs] = useState<Job[]>([]);
+  const [liveEvents, setLiveEvents] = useState<EventItem[]>([]);
+  const [liveExperts, setLiveExperts] = useState<SpecialistSummary[]>([]);
   useEffect(() => {
-    api.get<{ specialists: SpecialistSummary[] }>('/specialists').then((r) => r.specialists.length && setLiveExperts(r.specialists)).catch(() => {});
-    api.get<{ jobs: Job[] }>('/jobs?limit=4').then((r) => setLiveJobs(r.jobs)).catch(() => {});
-    api.get<{ events: EventItem[] }>('/events?when=upcoming').then((r) => setLiveEvents(r.events)).catch(() => {});
+    api.get<{ specialists: SpecialistSummary[] }>('/specialists').then((r) => setLiveExperts(r.specialists)).catch(() => setLiveExperts([]));
+    api.get<{ jobs: Job[] }>('/jobs?limit=4').then((r) => setLiveJobs(r.jobs)).catch(() => setLiveJobs([]));
+    api.get<{ events: EventItem[] }>('/events?when=upcoming').then((r) => setLiveEvents(r.events)).catch(() => setLiveEvents([]));
   }, []);
-  const featuredEvents = liveEvents
-    ? liveEvents.slice(0, 5).map((e) => ({
-        id: e.id,
-        title: e.title,
-        category: TOPIC_LABELS[e.topic] ?? e.topic,
-        date: new Date(e.startsAt).toLocaleDateString('en-NG', { weekday: 'short', day: 'numeric', month: 'short' }),
-        time: new Date(e.startsAt).toLocaleTimeString('en-NG', { hour: 'numeric', minute: '2-digit' }),
-        description: e.description,
-        hostName: e.host.name,
-        hostTitle: e.host.title,
-        isLiveNow: e.status === 'live',
-        isReplayAvailable: e.replayAvailable
-      }))
-    : events.slice(0, 5);
+  const featuredEvents = liveEvents.slice(0, 5).map((e) => ({
+    id: e.id,
+    title: e.title,
+    category: TOPIC_LABELS[e.topic] ?? e.topic,
+    date: new Date(e.startsAt).toLocaleDateString('en-NG', { weekday: 'short', day: 'numeric', month: 'short' }),
+    time: new Date(e.startsAt).toLocaleTimeString('en-NG', { hour: 'numeric', minute: '2-digit' }),
+    description: e.description,
+    hostName: e.host.name,
+    hostTitle: e.host.title,
+    isLiveNow: e.status === 'live',
+    isReplayAvailable: e.replayAvailable
+  }));
   const activeEvent = featuredEvents[eventIndex] ?? featuredEvents[0];
-  const openJobs = liveJobs
-    ? liveJobs.map((j) => ({
-        id: j.id,
-        title: j.title,
-        companyName: j.employer.name,
-        isCompanyVerified: j.employer.emailVerified,
-        location: j.location,
-        employmentType: JOB_TYPE_LABELS[j.employmentType] ?? j.employmentType,
-        salaryMinNGN: j.payMin ?? 0,
-        salaryMaxNGN: j.payMax ?? j.payMin ?? 0,
-        salaryPeriod: j.payPeriod ?? 'month'
-      }))
-    : jobs.filter((j) => j.status === 'published').slice(0, 4);
+  const openJobs = liveJobs.map((j) => ({
+    id: j.id,
+    title: j.title,
+    companyName: j.employer.name,
+    isCompanyVerified: j.employer.emailVerified,
+    location: j.location,
+    employmentType: JOB_TYPE_LABELS[j.employmentType] ?? j.employmentType,
+    salaryMinNGN: j.payMin ?? 0,
+    salaryMaxNGN: j.payMax ?? j.payMin ?? 0,
+    salaryPeriod: j.payPeriod ?? 'month'
+  }));
   const about = ABOUT_TABS[aboutTab];
 
   const cycle = (set: React.Dispatch<React.SetStateAction<number>>, len: number, dir: 1 | -1) =>
@@ -309,10 +273,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onBookSpec
   // Visitors go to sign-up with the pathway pre-selected; members go to their portal.
   const joinAs = (role: RoleType) => {
     if (user) return onNavigate('portal');
-    if (role === 'admin') {
-      switchRole(role);
-      return onNavigate('portal');
-    }
     onNavigate(`auth:signup:${role}`);
   };
 
@@ -563,6 +523,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onBookSpec
       </section>
 
       {/* 5 · EVENTS PHOTO PANEL ------------------------------------------------- */}
+      {!activeEvent && (
+        <section className={`${WRAP} pt-16`}>
+          <div className="rounded-[28px] border border-dashed border-stone-300 p-10 text-center">
+            <p className="font-display text-[28px]">No live sessions yet.</p>
+            <p className="mt-2 text-[14px] text-slate-500">Scheduled webinars from consultants and businesses will show here.</p>
+          </div>
+        </section>
+      )}
       {activeEvent && (
         <section className={`${WRAP} pt-4`}>
           <Reveal>
@@ -626,7 +594,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onBookSpec
                   </div>
                   <div className="flex items-center justify-between sm:justify-end gap-6">
                     <button
-                      onClick={() => onNavigate(liveEvents ? `events:${activeEvent.id}` : 'events')}
+                      onClick={() => onNavigate(`events:${activeEvent.id}`)}
                       className="group inline-flex items-center gap-3 h-11 pl-5 pr-2 rounded-full bg-lime text-ink text-[13px] font-medium"
                     >
                       {activeEvent.isReplayAvailable && !activeEvent.isLiveNow ? 'Watch Replay' : 'Register'}
@@ -658,16 +626,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onBookSpec
             Book a vetted specialist by audio or video call.
           </h2>
           <ul className="mt-10 border-t border-stone-200">
-            {(liveExperts
-              ? liveExperts.slice(0, 4).map((s) => ({
-                  id: s.id, name: s.name, avatar: s.avatarUrl, verified: s.credentialStatus === 'verified', title: s.title, location: s.location,
-                  years: s.experienceYears, price: s.fromPriceNgn, open: () => onNavigate(`specialists:${s.id}`)
-                }))
-              : specialists.slice(0, 4).map((s) => ({
-                  id: s.id, name: s.name, avatar: s.avatar, verified: s.verifiedCredentials.length > 0, title: s.title, location: s.location,
-                  years: s.experienceYears, price: s.hourlyRateNGN as number | null, open: () => onBookSpecialist(s)
-                }))
-            ).map((s) => (
+            {liveExperts.length === 0 && <li className="py-8 text-[14px] text-slate-500">No specialists have published a profile yet.</li>}
+            {liveExperts.slice(0, 4).map((s) => ({
+              id: s.id, name: s.name, avatar: s.avatarUrl, verified: s.credentialStatus === 'verified', title: s.title, location: s.location,
+              years: s.experienceYears, price: s.fromPriceNgn, open: () => onNavigate(`specialists:${s.id}`)
+            })).map((s) => (
               <li key={s.id} className="border-b border-stone-200">
                 <button
                   type="button"
@@ -689,7 +652,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onBookSpec
                   <span className="shrink-0 flex flex-col items-end gap-2">
                     {s.price != null && (
                       <span className="text-right">
-                        <span className="block text-[13px] font-mono-numbers whitespace-nowrap">{liveExperts ? `from ${formatMoney(s.price)}` : formatMoney(s.price)}</span>
+                        <span className="block text-[13px] font-mono-numbers whitespace-nowrap">from {formatMoney(s.price)}</span>
                         <span className="block text-[11px] text-slate-400">per session</span>
                       </span>
                     )}
@@ -715,10 +678,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onBookSpec
             Agricultural vacancies, free for candidates to apply.
           </h2>
           <ul className="mt-10 border-t border-stone-200">
+            {openJobs.length === 0 && <li className="py-8 text-[14px] text-slate-500">No vacancies are listed yet.</li>}
             {openJobs.map((j) => (
               <li key={j.id}>
                 <button
-                  onClick={() => onNavigate(liveJobs ? `jobs:view:${j.id}` : 'jobs')}
+                  onClick={() => onNavigate(`jobs:view:${j.id}`)}
                   className="group w-full text-left flex items-center gap-4 py-4 border-b border-stone-200"
                 >
                   <div className="min-w-0 flex-1">
@@ -776,56 +740,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onBookSpec
         </Reveal>
       </section>
 
-      {/* 8 · SUCCESS STORIES ---------------------------------------------------- */}
-      <section className={`${WRAP} pt-24 sm:pt-32`}>
-        <div className="grid grid-cols-3 items-center">
-          <span className="kicker text-slate-600">Success Stories</span>
-          <span className="text-center font-mono-numbers text-xs text-slate-500">
-            [{testimonialIndex + 1}/{TESTIMONIALS.length}]
-          </span>
-          <div className="flex justify-end">
-            <PagerButtons
-              onPrev={() => cycle(setTestimonialIndex, TESTIMONIALS.length, -1)}
-              onNext={() => cycle(setTestimonialIndex, TESTIMONIALS.length, 1)}
-            />
-          </div>
-        </div>
-
-        <AnimatePresence mode="wait">
-          <motion.blockquote
-            key={testimonialIndex}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            className="mt-14 max-w-4xl mx-auto text-center font-display font-normal text-[24px] sm:text-[34px] leading-[1.3] tracking-[-0.02em] text-balance"
-          >
-            {TESTIMONIALS[testimonialIndex].quote}
-          </motion.blockquote>
-        </AnimatePresence>
-
-        <div className="mt-14 flex justify-center gap-3 sm:gap-4">
-          {TESTIMONIALS.map((t, i) => (
-            <button key={t.name} onClick={() => setTestimonialIndex(i)} className="w-24 sm:w-28 text-center group" aria-pressed={i === testimonialIndex}>
-              <span className="block aspect-square rounded-xl overflow-hidden bg-stone-200">
-                <img
-                  src={t.image}
-                  alt={t.name}
-                  style={{ objectPosition: t.pos }}
-                  className={`w-full h-full object-cover scale-[1.6] transition-all duration-300 ${
-                    i === testimonialIndex ? '' : 'grayscale opacity-70 group-hover:opacity-100'
-                  }`}
-                  loading="lazy"
-                />
-              </span>
-              <span className="block mt-2.5 text-[11px] font-medium">{t.name}</span>
-              <span className="block text-[11px] text-slate-500">{t.role}</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* 9 · HOW FEES WORK ------------------------------------------------------ */}
+      {/* 8 · HOW FEES WORK ------------------------------------------------------ */}
       <section className={`${WRAP} pt-24 sm:pt-32`}>
         <div className="rounded-[28px] bg-mist p-8 sm:p-14">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

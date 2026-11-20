@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRole } from '../context/RoleContext';
 import { useCurrency } from '../context/CurrencyContext';
-import { RoleType } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, ChevronDown, Check, Menu, X, Settings, LogOut, LayoutGrid, MessagesSquare, Briefcase, CalendarDays, Video, Wallet, Mail, LifeBuoy, Award, BookOpen, Store, Megaphone } from 'lucide-react';
+import { Bell, ChevronDown, Menu, X, Settings, LogOut, LayoutGrid, MessagesSquare, Briefcase, CalendarDays, Video, Wallet, Mail, LifeBuoy, Award, BookOpen, Store, Megaphone } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { firstName, timeAgo } from '../lib/api';
 import { Avatar } from './ui';
@@ -12,14 +11,6 @@ interface NavbarProps {
   currentView: string;
   onNavigate: (view: string) => void;
 }
-
-export const ROLE_LABELS: Record<RoleType, { label: string; short: string; blurb: string }> = {
-  enthusiast: { label: 'Agriculture Enthusiast', short: 'Enthusiast', blurb: 'Learn, discuss, attend events, find jobs' },
-  farmer: { label: 'Farmer / Farm', short: 'Farmer', blurb: 'Book experts, hire workers, report progress' },
-  specialist: { label: 'Specialist / Consultant', short: 'Specialist', blurb: 'Consult, publish, sell books, get paid' },
-  business: { label: 'Agricultural Business', short: 'Business', blurb: 'Advertise, sponsor events, post jobs' },
-  admin: { label: 'Platform Admin', short: 'Admin', blurb: 'Review queues, fees, audit log' }
-};
 
 const NAV_LINKS: { view: string; label: string }[] = [
   { view: 'landing', label: 'Home' },
@@ -41,23 +32,21 @@ export const BrandMark: React.FC<{ className?: string }> = ({ className = '' }) 
 );
 
 export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
-  const { currentRole, switchRole, notifications: demoNotifications, markNotificationRead } = useRole();
+  const { markNotificationRead } = useRole();
   const auth = useAuth();
   const { user } = auth;
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const { currency, setCurrency } = useCurrency();
 
-  const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   // On the landing page the bar floats over the hero photo, as in the reference.
   const overlay = currentView === 'landing';
-  // Signed-in members see their real notifications; visitors exploring the demo see sample ones.
   const notifications = user
     ? auth.notifications.map((n) => ({ id: n.id, title: n.title, message: n.body, timestamp: timeAgo(n.createdAt), read: n.read, link: n.link }))
-    : demoNotifications.map((n) => ({ ...n, link: '' }));
-  const unreadCount = user ? auth.unread : demoNotifications.filter((n) => !n.read).length;
+    : [];
+  const unreadCount = user ? auth.unread : 0;
   const openNotification = (n: { id: string; link: string }) => {
     if (user) {
       auth.markRead(n.id);
@@ -88,7 +77,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
 
   useEffect(() => {
     setIsMobileOpen(false);
-    setIsRoleDropdownOpen(false);
     setIsNotifOpen(false);
     setIsAccountOpen(false);
   }, [currentView]);
@@ -166,10 +154,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           {user && (
           <div className="relative">
             <button
-              onClick={() => {
-                setIsNotifOpen(!isNotifOpen);
-                setIsRoleDropdownOpen(false);
-              }}
+              onClick={() => setIsNotifOpen(!isNotifOpen)}
               className={`relative p-2.5 rounded-full transition-colors ${tone.icon}`}
               aria-label={`Notifications, ${unreadCount} unread`}
             >
@@ -274,67 +259,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                 </div>
               )}
             </div>
-          )}
-
-          {/* Role switcher: lets visitors explore each dashboard with sample data */}
-          {!user && (
-          <div className="relative">
-            <button
-              onClick={() => {
-                setIsRoleDropdownOpen(!isRoleDropdownOpen);
-                setIsNotifOpen(false);
-              }}
-              aria-expanded={isRoleDropdownOpen}
-              aria-label={`Viewing as ${ROLE_LABELS[currentRole].label}`}
-              className={`flex items-center gap-1.5 pl-3 pr-2.5 py-2 rounded-full border text-xs font-medium transition-colors ${tone.chip}`}
-            >
-              <span className="opacity-60">Viewing as</span>
-              <span>{ROLE_LABELS[currentRole].short}</span>
-              <ChevronDown className="w-3.5 h-3.5 opacity-60" />
-            </button>
-
-            <AnimatePresence>
-              {isRoleDropdownOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] bg-white text-ink rounded-2xl shadow-xl border border-stone-200 p-2 z-50"
-                >
-                  <p className="px-3 pt-2 pb-2.5 text-[11px] text-slate-500">
-                    Switch persona to explore each dashboard
-                  </p>
-                  {(Object.keys(ROLE_LABELS) as RoleType[]).map((r) => {
-                    const isCurrent = currentRole === r;
-                    return (
-                      <button
-                        key={r}
-                        onClick={() => {
-                          switchRole(r);
-                          setIsRoleDropdownOpen(false);
-                          go('portal');
-                        }}
-                        className={`w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-left transition-colors ${
-                          isCurrent ? 'bg-stone-100' : 'hover:bg-stone-50'
-                        }`}
-                      >
-                        <span>
-                          <span className="block text-[13px] font-medium">{ROLE_LABELS[r].label}</span>
-                          <span className="block text-[11px] text-slate-500">{ROLE_LABELS[r].blurb}</span>
-                        </span>
-                        {isCurrent && (
-                          <span className="w-5 h-5 rounded-full bg-lime flex items-center justify-center shrink-0">
-                            <Check className="w-3 h-3" />
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
           )}
 
           {/* Primary: lime pill with dot, as in the reference "Log in" */}

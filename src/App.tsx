@@ -16,10 +16,6 @@ import { CommunityView } from './components/views/CommunityView';
 import { SettingsView } from './components/views/SettingsView';
 import { PaymentResultView } from './components/views/PaymentResultView';
 import { VideoConsultationRoom } from './components/VideoConsultationRoom';
-import { EnthusiastPortal } from './components/portals/EnthusiastPortal';
-import { FarmerPortal } from './components/portals/FarmerPortal';
-import { SpecialistPortal } from './components/portals/SpecialistPortal';
-import { BusinessPortal } from './components/portals/BusinessPortal';
 import { AdminPortal } from './components/portals/AdminPortal';
 import { SpecialistsView } from './components/views/SpecialistsView';
 import { JobsView } from './components/views/JobsView';
@@ -43,24 +39,29 @@ import { CreateAdModal } from './components/modals/CreateAdModal';
 import { Specialist, JobListing, ProgressReport } from './types';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Shown above the demo portals for signed-in members, pointing to the tools that are live.
-const LiveToolsBanner: React.FC<{ role: string; onNavigate: (v: string) => void }> = ({ role, onNavigate }) => {
+const AccountHome: React.FC<{ name: string; role: string; onNavigate: (v: string) => void }> = ({ name, role, onNavigate }) => {
   const links: [string, string][] = [
+    ['Community', 'community'],
     ['Consultations', 'consultations'],
-    ...(role === 'specialist' ? ([['Earnings', 'earnings'], ['My books', 'books:mine'], ['Adverts', 'business:ads']] as [string, string][])
-      : role === 'business' ? ([['Business dashboard', 'business'], ['Leads', 'business:leads'], ['Adverts', 'business:ads']] as [string, string][])
+    ...(role === 'specialist' ? ([['Earnings', 'earnings'], ['My books', 'books:mine'], ['Webinars', 'events:hosting'], ['Adverts', 'business:ads']] as [string, string][])
+      : role === 'business' ? ([['Business dashboard', 'business'], ['Webinars', 'events:hosting'], ['Leads', 'business:leads'], ['Adverts', 'business:ads']] as [string, string][])
       : [['Find a specialist', 'specialists'] as [string, string], ['Suppliers', 'suppliers'] as [string, string]]),
     ['Messages', 'messages'],
     ['Jobs', 'jobs'],
     ['Events', 'events'],
-    ['Help & support', 'support']
+    ['Investment portal', 'opportunities'],
+    ['Help & support', 'support'],
+    ['Settings', 'settings']
   ];
   return (
-    <div className="max-w-[1320px] mx-auto px-4 sm:px-8 lg:px-12 pt-8">
-      <div className="rounded-2xl bg-ink text-white px-5 py-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px]">
-        <span className="text-white/70">The dashboard below is a design preview. Your live tools:</span>
-        {links.map(([l, v]) => (
-          <button key={v} onClick={() => onNavigate(v)} className="underline underline-offset-4 decoration-lime hover:text-lime">{l}</button>
+    <div className="max-w-[1320px] mx-auto px-4 sm:px-8 lg:px-12 py-12">
+      <p className="text-[13px] text-slate-500">Signed in as {name}</p>
+      <h1 className="mt-3 font-display text-[36px] font-normal tracking-[-0.03em]">Your account</h1>
+      <div className="mt-8 flex flex-wrap gap-3">
+        {links.map(([label, view]) => (
+          <button key={view} onClick={() => onNavigate(view)} className="h-11 px-5 rounded-full border border-stone-300 hover:border-ink text-[13px] font-medium">
+            {label}
+          </button>
         ))}
       </div>
     </div>
@@ -68,7 +69,7 @@ const LiveToolsBanner: React.FC<{ role: string; onNavigate: (v: string) => void 
 };
 
 const MainContent: React.FC = () => {
-  const { currentRole, activeMeeting, switchRole } = useRole();
+  const { activeMeeting } = useRole();
   const { user, loading } = useAuth();
 
   // Views are strings like 'community', 'auth:signup:farmer' or 'settings:moderation'.
@@ -96,11 +97,6 @@ const MainContent: React.FC = () => {
       window.history.replaceState(null, '', window.location.pathname);
     }
   }, []);
-
-  // A signed-in member always sees the portal for their own role.
-  useEffect(() => {
-    if (user) switchRole(user.role);
-  }, [user?.role]);
 
   // Members who haven't finished onboarding are taken there first.
   useEffect(() => {
@@ -130,7 +126,7 @@ const MainContent: React.FC = () => {
       <main className="flex-1 overflow-x-hidden">
         <AnimatePresence mode="wait">
           <motion.div
-            key={`${base}-${arg ?? ''}-${currentRole}`}
+            key={`${base}-${arg ?? ''}-${user?.role ?? 'visitor'}`}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
@@ -154,12 +150,7 @@ const MainContent: React.FC = () => {
 
             {base === 'payment' && arg && <PaymentResultView reference={arg} onNavigate={handleNavigate} />}
 
-            {currentView === 'landing' && (
-              <LandingPage
-                onNavigate={handleNavigate}
-                onBookSpecialist={(spec) => setSelectedSpecialistForBooking(spec)}
-              />
-            )}
+            {currentView === 'landing' && <LandingPage onNavigate={handleNavigate} />}
 
             {base === 'specialists' && <SpecialistsView id={arg} onNavigate={handleNavigate} />}
 
@@ -186,37 +177,18 @@ const MainContent: React.FC = () => {
             {base === 'books' && <BookstoreView sub={arg} onNavigate={handleNavigate} />}
 
             {base === 'portal' && (
-              <div>
-                {user && currentRole !== 'admin' && <LiveToolsBanner role={user.role} onNavigate={handleNavigate} />}
-                {currentRole === 'enthusiast' && (
-                  <EnthusiastPortal
-                    onOpenCreatorQuiz={() => (user ? handleNavigate('creator') : setIsCreatorQuizOpen(true))}
-                    onApplyJob={(job) => (user ? handleNavigate('jobs') : setSelectedJobForApply(job))}
-                  />
-                )}
-                {currentRole === 'farmer' && (
-                  <FarmerPortal
-                    onBookSpecialist={(spec) => (user ? handleNavigate('specialists') : setSelectedSpecialistForBooking(spec))}
-                    onViewProgressReport={(rep) => setActiveProgressReport(rep)}
-                    onPostJobModal={() => (user ? handleNavigate('jobs:new') : setIsPostJobOpen(true))}
-                    onSubmitOpportunityModal={() => handleNavigate('opportunities')}
-                  />
-                )}
-                {currentRole === 'specialist' && (
-                  <SpecialistPortal
-                    onPublishBookModal={() => handleNavigate(user ? 'books:mine' : 'auth:signup:specialist')}
-                    onOpenWebinars={() => handleNavigate('events:hosting')}
-                  />
-                )}
-                {currentRole === 'business' && (
-                  <BusinessPortal
-                    onPostJobModal={() => (user ? handleNavigate('jobs:new') : setIsPostJobOpen(true))}
-                    onCreateAdModal={() => (user ? handleNavigate('business:ads') : setIsCreateAdOpen(true))}
-                    onOpenWebinars={() => handleNavigate('events:hosting')}
-                  />
-                )}
-                {currentRole === 'admin' && <AdminPortal key={arg ?? ''} tab={arg} />}
-              </div>
+              user?.role === 'admin' ? <AdminPortal key={arg ?? ''} tab={arg} />
+              : user ? <AccountHome name={user.name} role={user.role} onNavigate={handleNavigate} />
+              : (
+                <div className="max-w-xl mx-auto px-4 py-20 text-center">
+                  <h1 className="font-display text-[36px] font-normal tracking-[-0.03em]">Log in to use your account</h1>
+                  <p className="mt-3 text-[14px] text-slate-500">Sample dashboards are turned off. Create an account or sign in to test the live tools.</p>
+                  <div className="mt-6 flex justify-center gap-3">
+                    <button onClick={() => handleNavigate('auth:login')} className="h-11 px-5 rounded-full border border-stone-300 text-[13px] font-medium">Log in</button>
+                    <button onClick={() => handleNavigate('auth:signup')} className="h-11 px-5 rounded-full bg-lime text-[13px] font-medium">Join</button>
+                  </div>
+                </div>
+              )
             )}
           </motion.div>
         </AnimatePresence>
