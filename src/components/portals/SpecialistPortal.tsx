@@ -213,7 +213,7 @@ export const SpecialistPortal: React.FC<SpecialistPortalProps> = ({ onPublishBoo
                 Immutable Earnings Ledger & Payout Schedule
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
-                Transparent 15% platform fee deduction with scheduled bank transfers
+                Transparent 10% platform fee deduction with scheduled bank transfers
               </p>
             </div>
             <button
@@ -305,7 +305,7 @@ export const SpecialistPortal: React.FC<SpecialistPortalProps> = ({ onPublishBoo
 
                 <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-xs">
                   <span className="text-emerald-700 font-medium">
-                    Estimated Royalties: {formatMoney(bk.downloadsCount * bk.priceNGN * 0.85)}
+                    Estimated Royalties: {formatMoney(bk.downloadsCount * bk.priceNGN * 0.9)}
                   </span>
                   <button
                     onClick={() => alert(`Previewing chapter: ${bk.sampleChapter}`)}
@@ -349,7 +349,7 @@ export const SpecialistPortal: React.FC<SpecialistPortalProps> = ({ onPublishBoo
                 />
               </div>
               <p className="text-[11px] text-slate-500 mt-1">
-                Net earnings after 15% platform commission: {formatMoney(hourlyRateInput * 0.85)}
+                Net earnings after 10% platform commission: {formatMoney(hourlyRateInput * 0.9)}
               </p>
             </div>
 

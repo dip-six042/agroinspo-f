@@ -27,7 +27,7 @@ export const JobsView: React.FC<{ sub?: string; id?: string; onNavigate: (v: str
         <div>
           <Kicker>Jobs</Kicker>
           <h1 className="mt-4 font-display text-[34px] sm:text-[48px] font-normal leading-[1.05] tracking-[-0.03em] max-w-3xl">
-            Agricultural jobs across Nigeria. Always free to apply.
+            Agricultural jobs in every country. Always free to apply.
           </h1>
         </div>
         {!user ? (

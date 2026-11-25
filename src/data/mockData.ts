@@ -560,7 +560,7 @@ export const INITIAL_LEDGER: LedgerEntry[] = [
     id: 'led_1',
     date: '2026-10-26 10:15',
     type: 'Consultation Earned',
-    amountNGN: 15300,
+    amountNGN: 16200,
     isCredit: true,
     reference: 'CONS-GRN-892',
     status: 'cleared'
@@ -568,8 +568,8 @@ export const INITIAL_LEDGER: LedgerEntry[] = [
   {
     id: 'led_2',
     date: '2026-10-26 10:15',
-    type: 'Platform Fee (15%)',
-    amountNGN: 2700,
+    type: 'Platform Fee (10%)',
+    amountNGN: 1800,
     isCredit: false,
     reference: 'COMM-GRN-892',
     status: 'cleared'

@@ -148,7 +148,7 @@ const AuthorBooks: React.FC = () => {
   return (
     <div>
       <div className="flex justify-between items-center gap-3">
-        <p className="text-[13px] text-slate-500">You earn the price less the platform commission, available a week after each sale.</p>
+        <p className="text-[13px] text-slate-500">You earn the price less the 10% platform fee, available a week after each sale.</p>
         <Button variant="lime" onClick={() => open('new')}>Publish a book</Button>
       </div>
       <ul className="mt-6 space-y-3">

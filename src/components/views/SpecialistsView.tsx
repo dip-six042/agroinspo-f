@@ -3,6 +3,7 @@ import { ArrowLeft, BadgeCheck, MapPin, Search, Star, Video, Phone, MessageCircl
 import { useAuth } from '../../context/AuthContext';
 import { api, ApiError, firstName, Service, Slot, SpecialistSummary, startConversation, TOPIC_LABELS } from '../../lib/api';
 import { Avatar, Button, Kicker, naira, Notice, Pill, selectClass, textareaClass, Toast, WRAP } from '../ui';
+import { COUNTRIES, placeLabel } from '../../data/places';
 
 const credentialPill = (s: SpecialistSummary) =>
   s.credentialStatus === 'verified' ? <Pill tone="good"><BadgeCheck className="w-3 h-3" /> Credentials checked</Pill>
@@ -83,7 +84,7 @@ const ExpertProfile: React.FC<{ id: string; onNavigate: (v: string) => void; onB
             </div>
           </div>
           <div className="mt-6 flex flex-wrap gap-x-5 gap-y-1 text-[13px] text-slate-600">
-            <span className="inline-flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{s.location || s.serviceArea}</span>
+            <span className="inline-flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{placeLabel(s.location, s.country) || s.serviceArea}</span>
             <span>Speaks {s.languages.join(', ')}</span>
           </div>
           {s.specialties.length > 0 && <div className="mt-4 flex flex-wrap gap-1.5">{s.specialties.map((x) => <Pill key={x}>{x}</Pill>)}</div>}
@@ -162,7 +163,7 @@ const ExpertProfile: React.FC<{ id: string; onNavigate: (v: string) => void; onB
                   <div className="flex justify-between"><dt className="text-slate-500">Cancellation</dt><dd className="text-right">Free up to 24 h before</dd></div>
                 </dl>
               )}
-              <p className="mt-2 text-[11px] text-slate-500 leading-relaxed">Payment is taken by Kora when you book. If the specialist cancels or doesn’t join, you’re refunded in full. The specialist receives the fee less the platform commission after the session.</p>
+              <p className="mt-2 text-[11px] text-slate-500 leading-relaxed">Payment is taken by Kora when you book. If the specialist cancels or doesn’t join, you’re refunded in full. The specialist receives the fee less the 10% platform fee after the session.</p>
               {error && <Notice tone="error" className="mt-3">{error}</Notice>}
               <Button variant="lime" className="mt-4 w-full h-12" busy={busy} disabled={!serviceId || !slotId || objective.trim().length < 20} onClick={book}>
                 {user ? `Book and pay ${service ? naira(service.priceNgn) : ''}` : 'Join free to book'}
@@ -185,6 +186,7 @@ export const SpecialistsView: React.FC<{ id?: string; onNavigate: (v: string) =>
   const [q, setQ] = useState('');
   const [debounced, setDebounced] = useState('');
   const [topic, setTopic] = useState('');
+  const [country, setCountry] = useState('');
   const [verified, setVerified] = useState(false);
 
   useEffect(() => {
@@ -195,9 +197,10 @@ export const SpecialistsView: React.FC<{ id?: string; onNavigate: (v: string) =>
     const p = new URLSearchParams();
     if (debounced) p.set('q', debounced);
     if (topic) p.set('topic', topic);
+    if (country) p.set('country', country);
     if (verified) p.set('verified', '1');
     api.get<{ specialists: SpecialistSummary[] }>(`/specialists?${p}`).then((r) => setList(r.specialists)).catch((e: ApiError) => setError(e.message));
-  }, [debounced, topic, verified]);
+  }, [debounced, topic, country, verified]);
 
   return (
     <div className={`${WRAP} py-12 sm:py-16`}>
@@ -207,17 +210,23 @@ export const SpecialistsView: React.FC<{ id?: string; onNavigate: (v: string) =>
           <h1 className="mt-4 font-display text-[34px] sm:text-[48px] font-normal leading-[1.05] tracking-[-0.03em] max-w-3xl">
             Book an agricultural specialist by video or audio call.
           </h1>
+          <p className="mt-3 max-w-2xl text-[14px] text-slate-500">Experts from every country are listed. Filter by country when you want someone local.</p>
           <div className="mt-8 flex flex-wrap gap-2">
             <div className="relative flex-1 min-w-[220px]">
               <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
               <label htmlFor="ex-q" className="sr-only">Search experts</label>
-              <input id="ex-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Name, crop, animal, skill or state"
+              <input id="ex-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Name, crop, animal, skill, city or country"
                 className="w-full h-11 pl-10 pr-4 rounded-full border border-stone-300 bg-white text-[14px] focus:outline-none focus:border-ink" />
             </div>
             <label htmlFor="ex-topic" className="sr-only">Topic</label>
             <select id="ex-topic" className={selectClass} value={topic} onChange={(e) => setTopic(e.target.value)}>
               <option value="">All topics</option>
               {Object.entries(TOPIC_LABELS).map(([k, l]) => <option key={k} value={k}>{l}</option>)}
+            </select>
+            <label htmlFor="ex-country" className="sr-only">Country</label>
+            <select id="ex-country" className={selectClass} value={country} onChange={(e) => setCountry(e.target.value)}>
+              <option value="">All countries</option>
+              {COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
             <button onClick={() => setVerified(!verified)} aria-pressed={verified}
               className={`h-11 px-4 rounded-full border text-[13px] ${verified ? 'bg-ink text-white border-ink' : 'border-stone-300'}`}>Credentials checked</button>
@@ -236,7 +245,7 @@ export const SpecialistsView: React.FC<{ id?: string; onNavigate: (v: string) =>
                     </div>
                   </div>
                   <div className="mt-4 flex flex-wrap items-center gap-2">{credentialPill(s)}<Stars rating={s.rating} count={s.reviewCount} /></div>
-                  <p className="mt-3 text-[12px] text-slate-500 inline-flex items-center gap-1.5"><MapPin className="w-3 h-3" />{s.location} · {s.experienceYears} yrs</p>
+                  <p className="mt-3 text-[12px] text-slate-500 inline-flex items-center gap-1.5"><MapPin className="w-3 h-3" />{placeLabel(s.location, s.country) || 'Location not shown'} · {s.experienceYears} yrs</p>
                   <div className="mt-auto pt-4 flex items-center justify-between text-[13px]">
                     <span className="inline-flex items-center gap-1.5 text-slate-600"><Clock className="w-3.5 h-3.5" />{s.nextSlot ? `Next: ${dayKey(s.nextSlot)}, ${timeOf(s.nextSlot)}` : 'No open times'}</span>
                     {s.fromPriceNgn !== null && <span className="font-mono-numbers">from {naira(s.fromPriceNgn)}</span>}

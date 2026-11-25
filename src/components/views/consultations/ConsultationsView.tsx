@@ -184,7 +184,7 @@ const ServicesAndSlots: React.FC = () => {
             <select aria-label="Duration" className={selectClass} value={f.durationMin} onChange={(e) => setF({ ...f, durationMin: e.target.value })}>{[15, 30, 45, 60, 90, 120].map((m) => <option key={m} value={m}>{m} min</option>)}</select>
             <input aria-label="Price in naira" type="number" min={1000} step={500} className={inputClass} value={f.priceNgn} onChange={(e) => setF({ ...f, priceNgn: e.target.value })} />
           </div>
-          <p className="text-[11px] text-slate-500">You receive the price less the platform commission. Changing a price never affects bookings already paid.</p>
+          <p className="text-[11px] text-slate-500">You receive the price less the 10% platform fee. Changing a price never affects bookings already paid.</p>
           <Button type="submit">Add service</Button>
         </form>
       </section>

@@ -39,7 +39,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => (
   <footer className="bg-ink text-white mt-24">
     <div className="max-w-[1320px] mx-auto px-4 sm:px-8 lg:px-12 pt-16 pb-10">
       <p className="font-display font-normal text-[22px] sm:text-[26px] leading-[1.3] tracking-[-0.015em] max-w-xl">
-        Growing the future of Nigerian farming with trusted expertise, fair work and transparent partnerships.
+        Growing agriculture worldwide with trusted expertise, fair work and transparent partnerships.
       </p>
 
       <div className="mt-16 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-10">

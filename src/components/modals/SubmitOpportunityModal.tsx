@@ -95,7 +95,7 @@ export const SubmitOpportunityModal: React.FC<SubmitOpportunityModalProps> = ({ 
             <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
               <AlertCircle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
               <span>
-                Investment funds are subject to strict Nigerian regulatory guidelines. Unapproved opportunities remain private and cannot solicit capital.
+                Investment funds are subject to the financial regulations of each country where they are offered. Unapproved opportunities remain private and cannot solicit capital.
               </span>
             </div>
 
