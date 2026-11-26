@@ -4,6 +4,7 @@ import { useCurrency } from '../context/CurrencyContext';
 import { useAuth } from '../context/AuthContext';
 import { Avatar } from './ui';
 import { RoleType } from '../types';
+import { placeLabel } from '../data/places';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight,
@@ -83,7 +84,7 @@ const PagerButtons: React.FC<{ onPrev: () => void; onNext: () => void; light?: b
 const MISSION_CARDS = [
   {
     title: 'Our Mission',
-    text: 'To connect Nigerian farmers with verified expertise, skilled workers and reliable partners, so good farming knowledge reaches the field faster.'
+    text: 'To connect farmers anywhere with verified expertise, skilled workers and reliable partners, so good farming knowledge reaches the field faster.'
   },
   {
     title: 'How We Earn Trust',
@@ -100,7 +101,7 @@ const ABOUT_TABS = {
     label: 'About Us',
     kicker: 'Who We Are at Agro Inspo',
     statement:
-      'We’re building the practical home for Nigerian agriculture: a place to learn, ask an expert, hire good hands and find the right partners, all from one trusted account.',
+      'We’re building the practical home for agriculture worldwide: a place to learn, ask an expert, hire good hands and find the right partners, all from one trusted account.',
     body: 'Agro Inspo brings community, live learning, paid consultations, jobs and business listings together, with clear permissions for each kind of member and honest labels on everything we verify.'
   },
   how: {
@@ -114,8 +115,8 @@ const ABOUT_TABS = {
     label: 'Vision',
     kicker: 'Where We’re Headed',
     statement:
-      'A trusted agricultural ecosystem rather than a static directory, where knowledge, work and investment flow to the farms that need them most.',
-    body: 'We start with the workflows people rely on every day, then expand into new regions, sectors and languages as members tell us what helps.'
+      'A trusted agricultural ecosystem rather than a static directory, where knowledge, work and partnerships move across countries to the farms that need them.',
+    body: 'Your city or state places your profile in a country. You can still browse specialists, jobs and live sessions from every other country.'
   },
   mission: {
     label: 'Mission',
@@ -167,7 +168,7 @@ const FEATURES = [
   {
     icon: Video,
     title: 'Specialist Consultations',
-    text: 'Find agronomists, vets and engineers by specialty and location, see rates and terms up front, then meet by audio or video in the browser.'
+    text: 'Find agronomists, vets and engineers by specialty and country, see rates and terms up front, then meet by audio or video in the browser.'
   },
   {
     icon: Radio,
@@ -177,7 +178,7 @@ const FEATURES = [
   {
     icon: Briefcase,
     title: 'Agricultural Jobs',
-    text: 'Farms and verified businesses post vacancies; candidates search, save and apply without paying to apply.'
+    text: 'Farms and verified businesses post vacancies in any country; candidates search, save and apply without paying to apply.'
   },
   {
     icon: MessagesSquare,
@@ -217,10 +218,10 @@ const TRUST = [
 ];
 
 const FEES = [
-  { title: 'Consultations', text: 'Rate set by each specialist. The platform commission and your total are shown before you pay.' },
+  { title: 'Consultations', text: 'Rate set by each specialist. Agro Inspo keeps 10%, and the total is shown before you pay.' },
   { title: 'Job listings', text: 'A fixed fee per listing for employers. Always free for candidates to apply.' },
-  { title: 'Adverts & sponsorship', text: 'Package prices by placement and duration. Sponsored content is always labelled.' },
-  { title: 'Books & learning', text: 'Price set by the author. Access is granted to your library after successful payment.' }
+  { title: 'Adverts & sponsorship', text: 'Package prices by placement and duration. Sponsored content is always labelled, and sponsorships pay a 10% platform fee.' },
+  { title: 'Books & learning', text: 'Price set by the author. Agro Inspo keeps 10%, and access is granted to your library after payment.' }
 ];
 
 /* Page --------------------------------------------------------------------- */
@@ -282,7 +283,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
       <section className="relative h-[100svh] min-h-[640px] max-h-[900px] overflow-hidden text-white">
         <img
           src={HERO_FARMER_SUNRISE}
-          alt="Nigerian farmer holding a tablet in a maize field at sunrise"
+          alt="Farmer holding a tablet in a maize field at sunrise"
           className="absolute inset-0 w-full h-full object-cover object-[60%_center]"
           fetchPriority="high"
         />
@@ -298,14 +299,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               className="max-w-2xl"
             >
               <span className="inline-flex px-4 py-1.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md text-xs">
-                Nigeria’s Agricultural Ecosystem
+                Agriculture, worldwide
               </span>
               <h1 className="mt-6 font-display font-normal text-[44px] leading-[1.02] sm:text-[64px] lg:text-[76px] tracking-[-0.035em]">
                 Grow, Learn and Hire in One Trusted Network.
               </h1>
               <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-white/80">
-                Book verified agricultural specialists, join live masterclasses, find farm jobs and reach the businesses that
-                supply you. Join us in changing how Nigeria farms.
+                Agro Inspo is a global agricultural platform connecting farmers, agricultural professionals, businesses,
+                organizations and enthusiasts to knowledge, services, opportunities and communities across borders. Learn,
+                connect, collaborate and grow, wherever you are.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-5">
                 <button
@@ -628,7 +630,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
           <ul className="mt-10 border-t border-stone-200">
             {liveExperts.length === 0 && <li className="py-8 text-[14px] text-slate-500">No specialists have published a profile yet.</li>}
             {liveExperts.slice(0, 4).map((s) => ({
-              id: s.id, name: s.name, avatar: s.avatarUrl, verified: s.credentialStatus === 'verified', title: s.title, location: s.location,
+              id: s.id, name: s.name, avatar: s.avatarUrl, verified: s.credentialStatus === 'verified', title: s.title, location: placeLabel(s.location, s.country),
               years: s.experienceYears, price: s.fromPriceNgn, open: () => onNavigate(`specialists:${s.id}`)
             })).map((s) => (
               <li key={s.id} className="border-b border-stone-200">

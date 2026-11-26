@@ -212,7 +212,7 @@ export interface CreatorApplication {
 export interface LedgerEntry {
   id: string;
   date: string;
-  type: 'Consultation Earned' | 'Platform Fee (15%)' | 'Book Sale Net' | 'Ad Campaign Spend' | 'Payout Disbursed' | 'Job Listing Fee';
+  type: 'Consultation Earned' | 'Platform Fee (10%)' | 'Book Sale Net' | 'Ad Campaign Spend' | 'Payout Disbursed' | 'Job Listing Fee';
   amountNGN: number;
   isCredit: boolean;
   reference: string;

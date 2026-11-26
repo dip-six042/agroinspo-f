@@ -108,7 +108,7 @@ export const EmployerJobs: React.FC<{ onNavigate: (v: string) => void }> = ({ on
       {jobs?.length === 0 && (
         <div className="mt-6 rounded-3xl border border-dashed border-stone-300 p-10 text-center">
           <p className="font-display text-[22px]">No job listings yet.</p>
-          <p className="mt-2 text-[13px] text-slate-500">Post your first vacancy to reach farm workers and agricultural professionals across Nigeria.</p>
+          <p className="mt-2 text-[13px] text-slate-500">Post your first vacancy to reach farm workers and agricultural professionals in any country.</p>
         </div>
       )}
       <ul className="mt-6 space-y-3">

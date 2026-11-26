@@ -29,7 +29,7 @@ const dateLabel = (iso: string) =>
 export const OpportunitiesView: React.FC = () => {
   const [portal, setPortal] = useState<Portal | null>(null);
   const [form, setForm] = useState({
-    fullName: '', email: '', phone: '', sector: '', capacityNgn: '', country: 'Nigeria', location: '', updatesOptIn: true, consent: false
+    fullName: '', email: '', phone: '', sector: '', capacityNgn: '', country: '', location: '', updatesOptIn: true, consent: false
   });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -73,7 +73,7 @@ export const OpportunitiesView: React.FC = () => {
       </h1>
       <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-slate-600">
         {portal?.announcement ||
-          'Interested in future agricultural investment opportunities across Nigeria and Africa? Join the waiting list to hear when the portal is being prepared. Nothing on this page takes money.'}
+          'Interested in future agricultural investment opportunities in any country? Join the waiting list to hear when the portal is being prepared. Nothing on this page takes money.'}
       </p>
 
       <div className="mt-8 grid lg:grid-cols-2 gap-4">

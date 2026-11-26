@@ -65,6 +65,7 @@ export interface Me {
   role: Role;
   title: string;
   location: string;
+  country: string;
   bio: string;
   avatarUrl: string;
   interests: string[];
@@ -321,6 +322,7 @@ export interface SpecialistSummary {
   title: string;
   headline: string;
   location: string;
+  country: string;
   bio: string;
   avatarUrl: string;
   specialties: string[];

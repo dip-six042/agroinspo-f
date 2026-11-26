@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { api, ApiError, GOAL_LABELS, TOPIC_LABELS, timeAgo } from '../../lib/api';
 import { Avatar, Button, Chip, Field, inputClass, Kicker, Notice, textareaClass } from '../ui';
+import { PlaceFields, usePlace } from '../PlaceFields';
 import { EmailVerifyBanner } from './CommunityView';
 
 type Tab = 'profile' | 'privacy' | 'notifications' | 'security' | 'safety' | 'moderation';
@@ -101,7 +102,7 @@ export const SettingsView: React.FC<{ initialTab?: string; onNavigate: (v: strin
                     ))}
                   </div>
                 </div>
-                <Toggle id="pv-loc" label="Show my location" hint="Others see your town and state on your profile." checked={user.privacy.showLocation} onChange={(v) => save({ privacy: { showLocation: v } })} />
+                <Toggle id="pv-loc" label="Show my location" hint="Others see your city, state and country on your profile." checked={user.privacy.showLocation} onChange={(v) => save({ privacy: { showLocation: v } })} />
                 <Toggle id="pv-act" label="Show my interests" hint="Others see the topics you follow." checked={user.privacy.showActivity} onChange={(v) => save({ privacy: { showActivity: v } })} />
               </div>
               <p className="mt-6 text-[12px] text-slate-500">Your email and phone number are never shown to other members.</p>
@@ -130,10 +131,10 @@ export const SettingsView: React.FC<{ initialTab?: string; onNavigate: (v: strin
 
 const ProfileTab: React.FC<{ save: (p: Record<string, unknown>, ok?: string) => Promise<void> }> = ({ save }) => {
   const { user } = useAuth();
+  const place = usePlace(user!.location, user!.country);
   const [f, setF] = useState({
     name: user!.name,
     title: user!.title,
-    location: user!.location,
     bio: user!.bio,
     interests: user!.interests,
     goals: user!.goals
@@ -146,7 +147,7 @@ const ProfileTab: React.FC<{ save: (p: Record<string, unknown>, ok?: string) => 
       onSubmit={async (e) => {
         e.preventDefault();
         setBusy(true);
-        await save(f, 'Profile saved.');
+        await save({ ...f, location: place.location, country: place.country }, 'Profile saved.');
         setBusy(false);
       }}
       className="space-y-6"
@@ -165,9 +166,7 @@ const ProfileTab: React.FC<{ save: (p: Record<string, unknown>, ok?: string) => 
         <Field id="p-title" label="Headline">
           <input id="p-title" className={inputClass} value={f.title} onChange={(e) => setF({ ...f, title: e.target.value })} maxLength={120} />
         </Field>
-        <Field id="p-loc" label="Location">
-          <input id="p-loc" className={inputClass} value={f.location} onChange={(e) => setF({ ...f, location: e.target.value })} maxLength={120} />
-        </Field>
+        <PlaceFields idPrefix="p" location={place.location} country={place.country} onLocation={place.onLocation} onCountry={place.onCountry} options={place.options} />
       </div>
       <Field id="p-bio" label="About you" hint="Up to 1,000 characters.">
         <textarea id="p-bio" rows={4} className={textareaClass} value={f.bio} onChange={(e) => setF({ ...f, bio: e.target.value })} maxLength={1000} />

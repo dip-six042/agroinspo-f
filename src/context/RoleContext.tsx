@@ -216,7 +216,7 @@ export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children
   ): ConsultationBooking => {
     const spec = specialists.find((s) => s.id === specialistId) || specialists[0];
     const fee = spec.hourlyRateNGN;
-    const platformFee = Math.round(fee * 0.15);
+    const platformFee = Math.round(fee * 0.1);
 
     const newBooking: ConsultationBooking = {
       id: `bk_${Date.now()}`,
@@ -439,7 +439,7 @@ export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children
       id: `led_${Date.now()}`,
       date: new Date().toISOString().replace('T', ' ').substring(0, 16),
       type: 'Book Sale Net',
-      amountNGN: Math.round(b.priceNGN * 0.85),
+      amountNGN: Math.round(b.priceNGN * 0.9),
       isCredit: true,
       reference: `BOOK-${b.id.toUpperCase()}`,
       status: 'cleared'

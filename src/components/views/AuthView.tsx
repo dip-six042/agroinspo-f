@@ -101,7 +101,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ mode, token, initialRole, on
             Learn, ask an expert, hire good hands and find the right partners.
           </p>
           <p className="mt-4 text-[13px] text-white/70 max-w-sm">
-            One account for Nigeria’s agricultural ecosystem. Free to join, and always free to apply for jobs.
+            One account for agriculture worldwide. Free to join, and always free to apply for jobs.
           </p>
         </div>
       </div>

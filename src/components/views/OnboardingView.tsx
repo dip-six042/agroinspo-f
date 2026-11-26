@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { ApiError, firstName, GOAL_LABELS, TOPIC_LABELS } from '../../lib/api';
 import { Button, Chip, Field, inputClass, Kicker, Notice } from '../ui';
+import { PlaceFields, usePlace } from '../PlaceFields';
 import { EmailVerifyBanner } from './CommunityView';
 
 const TITLE_HINT: Record<string, string> = {
@@ -16,7 +17,7 @@ export const OnboardingView: React.FC<{ onDone: () => void }> = ({ onDone }) => 
   const { user, updateMe } = useAuth();
   const [interests, setInterests] = useState<string[]>(user?.interests ?? []);
   const [goals, setGoals] = useState<string[]>(user?.goals ?? []);
-  const [location, setLocation] = useState(user?.location ?? '');
+  const place = usePlace(user?.location ?? '', user?.country ?? '');
   const [title, setTitle] = useState(user?.title ?? '');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -30,7 +31,7 @@ export const OnboardingView: React.FC<{ onDone: () => void }> = ({ onDone }) => 
     if (!interests.length) return setError('Pick at least one interest so we can tailor your feed.');
     setBusy(true);
     try {
-      await updateMe({ interests, goals, location, title, completeOnboarding: true });
+      await updateMe({ interests, goals, location: place.location, country: place.country, title, completeOnboarding: true });
       onDone();
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Couldn’t save. Try again.');
@@ -46,7 +47,7 @@ export const OnboardingView: React.FC<{ onDone: () => void }> = ({ onDone }) => 
         Welcome, {firstName(user.name)}. What are you into?
       </h1>
       <p className="mt-4 text-[15px] text-slate-500 max-w-xl">
-        Your interests shape your feed, event suggestions and job alerts. You can change them any time in Settings.
+        Your interests shape your feed, event suggestions and job alerts. Your city or state places you in a country, and you can still use resources from every other country.
       </p>
 
       <div className="mt-6">
@@ -81,9 +82,7 @@ export const OnboardingView: React.FC<{ onDone: () => void }> = ({ onDone }) => 
         <Field id="ob-title" label="Headline" hint={TITLE_HINT[user.role]}>
           <input id="ob-title" className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} maxLength={120} />
         </Field>
-        <Field id="ob-location" label="Location" hint="Town and state. You control who sees it.">
-          <input id="ob-location" className={inputClass} value={location} onChange={(e) => setLocation(e.target.value)} maxLength={120} />
-        </Field>
+        <PlaceFields idPrefix="ob" location={place.location} country={place.country} onLocation={place.onLocation} onCountry={place.onCountry} options={place.options} />
       </section>
 
       {error && <Notice tone="error" className="mt-8">{error}</Notice>}

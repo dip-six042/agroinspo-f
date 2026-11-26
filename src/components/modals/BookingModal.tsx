@@ -21,7 +21,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ specialist, onClose,
   const [bookedBooking, setBookedBooking] = useState<any>(null);
 
   const fee = specialist.hourlyRateNGN;
-  const platformFee = Math.round(fee * 0.15);
+  const platformFee = Math.round(fee * 0.1);
   const total = fee;
 
   const handleSubmit = (e: React.FormEvent) => {

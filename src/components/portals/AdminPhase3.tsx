@@ -78,7 +78,7 @@ export const AdminFinance: React.FC = () => {
         <Notice>
           Current rules (placeholders until the owner confirms): commission {Object.entries(f.rules.commissionPct).map(([k, v]) => `${k.replace('_', ' ')} ${v}%`).join(', ')};
           hold {f.rules.holdDays.consultation} day(s) for consultations and events, {f.rules.holdDays.book_purchase} for books; minimum payout {naira(f.rules.minPayoutNgn)}.
-          Set them in the server’s environment. {f.rules.selfApproval ? 'Self-approval of payout batches is ON (development only).' : 'A second admin must approve each payout batch.'}
+          Set them in the server’s environment. {f.rules.selfApproval ? 'You can prepare and approve payout batches yourself.' : 'A second admin must approve each payout batch.'}
         </Notice>
       )}
 
@@ -105,7 +105,7 @@ export const AdminFinance: React.FC = () => {
                     <>
                       <Button variant="ghost" className="h-9" busy={busy === `c${b.id}`} onClick={() => act(`c${b.id}`, () => api.post(`/admin/payout-batches/${b.id}/cancel`), () => 'Batch cancelled.')}>Cancel</Button>
                       <Button variant="lime" className="h-9" busy={busy === `a${b.id}`}
-                        title={b.createdBy === user?.name ? 'A different admin must approve' : undefined}
+                        title={b.createdBy === user?.name && !f?.rules.selfApproval ? 'A different admin must approve' : undefined}
                         onClick={() => act(`a${b.id}`, () => api.post<any>(`/admin/payout-batches/${b.id}/approve`), (r) => `Approved. ${r.results.paid} paid, ${r.results.failed} failed.`)}>Approve &amp; send</Button>
                     </>
                   )}
