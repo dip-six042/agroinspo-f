@@ -197,15 +197,17 @@ export const Sidebar: React.FC<{ currentView: string; onNavigate: (v: string) =>
           </span>
         </button>
         <SidebarNav currentView={currentView} onNavigate={onNavigate} />
-        <button
-          onClick={async () => {
-            await auth.logout();
-            onNavigate('landing');
-          }}
-          className="mt-6 w-full flex items-center gap-3 px-3 h-10 rounded-xl text-[13px] text-slate-600 hover:bg-white hover:text-ink border-t border-stone-200/80 pt-1"
-        >
-          <LogOut className="w-4 h-4" aria-hidden="true" /> Log out
-        </button>
+        <div className="mt-6 pt-3 border-t border-stone-200/80">
+          <button
+            onClick={async () => {
+              await auth.logout();
+              onNavigate('landing');
+            }}
+            className="w-full flex items-center gap-3 px-3 h-10 rounded-xl text-[13px] text-slate-600 hover:bg-white hover:text-ink"
+          >
+            <LogOut className="w-4 h-4" aria-hidden="true" /> Log out
+          </button>
+        </div>
       </div>
     </aside>
   );

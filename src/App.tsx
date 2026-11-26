@@ -15,6 +15,7 @@ import { AuthView, AuthMode } from './components/views/AuthView';
 import { OnboardingView } from './components/views/OnboardingView';
 import { CommunityView } from './components/views/CommunityView';
 import { SettingsView } from './components/views/SettingsView';
+import { DashboardView } from './components/views/DashboardView';
 import { PaymentResultView } from './components/views/PaymentResultView';
 import { VideoConsultationRoom } from './components/VideoConsultationRoom';
 import { AdminPortal } from './components/portals/AdminPortal';
@@ -39,35 +40,6 @@ import { SubmitOpportunityModal } from './components/modals/SubmitOpportunityMod
 import { CreateAdModal } from './components/modals/CreateAdModal';
 import { Specialist, JobListing, ProgressReport } from './types';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const AccountHome: React.FC<{ name: string; role: string; onNavigate: (v: string) => void }> = ({ name, role, onNavigate }) => {
-  const links: [string, string][] = [
-    ['Community', 'community'],
-    ['Consultations', 'consultations'],
-    ...(role === 'specialist' ? ([['Earnings', 'earnings'], ['My books', 'books:mine'], ['Webinars', 'events:hosting'], ['Adverts', 'business:ads']] as [string, string][])
-      : role === 'business' ? ([['Business dashboard', 'business'], ['Webinars', 'events:hosting'], ['Leads', 'business:leads'], ['Adverts', 'business:ads']] as [string, string][])
-      : [['Find a specialist', 'specialists'] as [string, string], ['Suppliers', 'suppliers'] as [string, string]]),
-    ['Messages', 'messages'],
-    ['Jobs', 'jobs'],
-    ['Events', 'events'],
-    ['Investment portal', 'opportunities'],
-    ['Help & support', 'support'],
-    ['Settings', 'settings']
-  ];
-  return (
-    <div className="max-w-[1320px] mx-auto px-4 sm:px-8 lg:px-12 py-12">
-      <p className="text-[13px] text-slate-500">Signed in as {name}</p>
-      <h1 className="mt-3 font-display text-[36px] font-normal tracking-[-0.03em]">Your account</h1>
-      <div className="mt-8 flex flex-wrap gap-3">
-        {links.map(([label, view]) => (
-          <button key={view} onClick={() => onNavigate(view)} className="h-11 px-5 rounded-full border border-stone-300 hover:border-ink text-[13px] font-medium">
-            {label}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 const MainContent: React.FC = () => {
   const { activeMeeting } = useRole();
@@ -183,7 +155,7 @@ const MainContent: React.FC = () => {
 
             {base === 'portal' && (
               user?.role === 'admin' ? <AdminPortal key={arg ?? ''} tab={arg} />
-              : user ? <AccountHome name={user.name} role={user.role} onNavigate={handleNavigate} />
+              : user ? <DashboardView onNavigate={handleNavigate} />
               : (
                 <div className="max-w-xl mx-auto px-4 py-20 text-center">
                   <h1 className="font-display text-[36px] font-normal tracking-[-0.03em]">Log in to use your account</h1>
