@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Check } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { api, ApiError, Role } from '../../lib/api';
-import { Button, Field, inputClass, Notice } from '../ui';
+import { Button, Field, inputClass, Notice, PasswordInput } from '../ui';
 import { BrandMark } from '../Navbar';
 import { HERO_FARMER_SUNRISE } from '../../data/mockData';
 
@@ -215,10 +215,8 @@ export const AuthView: React.FC<AuthViewProps> = ({ mode, token, initialRole, on
                   label={mode === 'reset' ? 'New password' : 'Password'}
                   hint={mode === 'login' ? undefined : 'At least 10 characters.'}
                 >
-                  <input
+                  <PasswordInput
                     id="password"
-                    type="password"
-                    className={inputClass}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     autoComplete={mode === 'login' ? 'current-password' : 'new-password'}

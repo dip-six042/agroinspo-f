@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { api, ApiError, GOAL_LABELS, TOPIC_LABELS, timeAgo } from '../../lib/api';
-import { Avatar, Button, Chip, Field, inputClass, Kicker, Notice, textareaClass } from '../ui';
+import { Avatar, Button, Chip, Field, inputClass, Kicker, Notice, PasswordInput, textareaClass } from '../ui';
 import { PlaceFields, usePlace } from '../PlaceFields';
 import { EmailVerifyBanner } from './CommunityView';
 
@@ -225,10 +225,10 @@ const SecurityTab: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         }}
       >
         <Field id="pw-cur" label="Current password">
-          <input id="pw-cur" type="password" autoComplete="current-password" className={inputClass} value={cur} onChange={(e) => setCur(e.target.value)} />
+          <PasswordInput id="pw-cur" autoComplete="current-password" value={cur} onChange={(e) => setCur(e.target.value)} />
         </Field>
         <Field id="pw-new" label="New password" hint="At least 10 characters.">
-          <input id="pw-new" type="password" autoComplete="new-password" className={inputClass} value={next} onChange={(e) => setNext(e.target.value)} />
+          <PasswordInput id="pw-new" autoComplete="new-password" value={next} onChange={(e) => setNext(e.target.value)} />
         </Field>
         {msg && <Notice tone={msg.tone}>{msg.text}</Notice>}
         <Button type="submit" busy={busy}>
