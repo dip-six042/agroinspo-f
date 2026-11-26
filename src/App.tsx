@@ -9,6 +9,7 @@ import { RoleProvider, useRole } from './context/RoleContext';
 import { Navbar } from './components/Navbar';
 import { LandingPage } from './components/LandingPage';
 import { Footer } from './components/Footer';
+import { Sidebar } from './components/Sidebar';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AuthView, AuthMode } from './components/views/AuthView';
 import { OnboardingView } from './components/views/OnboardingView';
@@ -112,6 +113,8 @@ const MainContent: React.FC = () => {
   const [isSubmitOppOpen, setIsSubmitOppOpen] = useState(false);
   const [isCreateAdOpen, setIsCreateAdOpen] = useState(false);
 
+  const withSidebar = Boolean(user) && !['landing', 'auth', 'onboarding'].includes(base);
+
   const handleNavigate = (view: string) => {
     setCurrentView(view);
     window.scrollTo({ top: 0 });
@@ -122,8 +125,10 @@ const MainContent: React.FC = () => {
       {/* Top Navbar adhering strictly to Top Bar Contract */}
       <Navbar currentView={currentView} onNavigate={handleNavigate} />
 
-      {/* Main View Area with Framer Motion transitions */}
-      <main className="flex-1 overflow-x-hidden">
+      {/* Signed-in pages get the account sidebar; the landing, sign-in and onboarding pages stay full width. */}
+      <div className="flex-1 flex">
+      {withSidebar && <Sidebar currentView={currentView} onNavigate={handleNavigate} />}
+      <main className="flex-1 min-w-0 overflow-x-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={`${base}-${arg ?? ''}-${user?.role ?? 'visitor'}`}
@@ -193,6 +198,7 @@ const MainContent: React.FC = () => {
           </motion.div>
         </AnimatePresence>
       </main>
+      </div>
 
       <Footer onNavigate={handleNavigate} />
 

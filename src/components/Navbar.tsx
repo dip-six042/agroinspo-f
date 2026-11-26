@@ -6,6 +6,7 @@ import { Bell, ChevronDown, Menu, X, Settings, LogOut, LayoutGrid, MessagesSquar
 import { useAuth } from '../context/AuthContext';
 import { firstName, timeAgo } from '../lib/api';
 import { Avatar } from './ui';
+import { SidebarNav } from './Sidebar';
 
 interface NavbarProps {
   currentView: string;
@@ -43,6 +44,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
 
   // On the landing page the bar floats over the hero photo, as in the reference.
   const overlay = currentView === 'landing';
+  const base = currentView.split(':')[0];
+  const sidebarShown = Boolean(user) && !['landing', 'auth', 'onboarding'].includes(base);
   const notifications = user
     ? auth.notifications.map((n) => ({ id: n.id, title: n.title, message: n.body, timestamp: timeAgo(n.createdAt), read: n.read, link: n.link }))
     : [];
@@ -108,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
 
   return (
     <header className={`${tone.bar} z-40`}>
-      <div className="max-w-[1320px] mx-auto px-4 sm:px-8 lg:px-12 h-20 flex items-center justify-between gap-4">
+      <div className={`${sidebarShown ? 'px-4 sm:px-6' : 'max-w-[1320px] mx-auto px-4 sm:px-8 lg:px-12'} h-20 flex items-center justify-between gap-4`}>
         {/* Brand + contact */}
         <div className="flex items-center gap-10 shrink-0">
           <button onClick={() => go('landing')} className="flex items-center gap-2.5 rounded-full" aria-label="Agro Inspo home">
@@ -118,7 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
         </div>
 
         {/* Center links */}
-        <nav className="hidden xl:flex items-center gap-6 text-[13px]" aria-label="Primary">
+        <nav className={`hidden ${sidebarShown ? '' : 'xl:flex'} items-center gap-6 text-[13px]`} aria-label="Primary">
           {NAV_LINKS.filter((l) => l.view !== 'landing').map((l) => (
             <button
               key={l.view}
@@ -278,7 +281,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           {/* Mobile menu toggle */}
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className={`xl:hidden p-2.5 rounded-full transition-colors ${tone.icon}`}
+            className={`${sidebarShown ? 'lg:hidden' : 'xl:hidden'} p-2.5 rounded-full transition-colors ${tone.icon}`}
             aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isMobileOpen}
           >
@@ -289,8 +292,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
 
       {/* Mobile sheet */}
       {isMobileOpen && (
-        <div className="xl:hidden absolute inset-x-3 top-[4.5rem] bg-white text-ink rounded-2xl border border-stone-200 shadow-xl p-2 z-50">
-          {NAV_LINKS.map((l) => (
+        <div className={`${sidebarShown ? 'lg:hidden max-h-[calc(100vh-6rem)] overflow-y-auto' : 'xl:hidden'} absolute inset-x-3 top-[4.5rem] bg-white text-ink rounded-2xl border border-stone-200 shadow-xl p-2 z-50`}>
+          {sidebarShown ? (
+            <div className="p-2"><SidebarNav currentView={currentView} onNavigate={go} compact /></div>
+          ) : NAV_LINKS.map((l) => (
             <button
               key={l.view}
               onClick={() => go(l.view)}
